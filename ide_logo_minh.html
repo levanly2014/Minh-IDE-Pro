@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minh IDE Pro</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f5f6fa;
+      --panel: #ffffff;
+      --panel-2: #f8f9fb;
+      --panel-3: #eef1f6;
+      --border: #d9dee8;
+      --text: #222222;
+      --muted: #6b7280;
+      --accent: #4285f4;
+      --accent-hover: #2f6fe4;
+      --danger: #e53935;
+      --warning: #f4b400;
+      --success: #34a853;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+      --topbar-bg: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
+      --topbar-text: #222222;
+      --topbar-border: #d9dee8;
+
+      --tab-bg: #eef2f7;
+      --tab-active-bg: #ffffff;
+      --tab-hover-bg: #e6ebf3;
+
+      --sidebar: #ffffff;
+      --gutter: #f1f3f6;
+
+      --modal-overlay: rgba(15, 23, 42, 0.55);
+      --modal-bg: #ffffff;
+      --modal-text: #0f172a;
+      --modal-border: #d9dee8;
+
+      --error-list-bg: #fff8f8;
+      --error-list-border: #ffd2d2;
+      --error-list-hover: #ffecec;
+      --error-line-bg: rgba(229, 57, 53, 0.12);
+      --error-line-border: rgba(229, 57, 53, 0.45);
+
+      --tree-hover: #f3f6fb;
+      --tree-active: #eaf2ff;
+      --tree-folder: #1f2937;
+      --tree-file: #334155;
+      --tree-muted: #64748b;
+
+      --input-bg: #ffffff;
+      --output-bg: #ffffff;
+      --code-bg: #ffffff;
+      --code-text: #222222;
+
+      --terminal-bg: #0b1020;
+      --terminal-text: #e5e7eb;
+      --terminal-border: #1f2a44;
+      --terminal-muted: #94a3b8;
+    }
+
+    body.dark {
+      --bg: #0b1020;
+      --panel: #111827;
+      --panel-2: #0f172a;
+      --panel-3: #172036;
+      --border: #273244;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --accent-hover: #3b82f6;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --success: #4ade80;
+      --shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+
+      --topbar-bg: linear-gradient(180deg, #111827 0%, #0b1220 100%);
+      --topbar-text: #e5e7eb;
+      --topbar-border: #223047;
+
+      --tab-bg: #162033;
+      --tab-active-bg: #111827;
+      --tab-hover-bg: #1b2740;
+
+      --sidebar: #111827;
+
+      --modal-overlay: rgba(0, 0, 0, 0.65);
+      --modal-bg: #111827;
+      --modal-text: #e5e7eb;
+      --modal-border: #2a3550;
+
+      --error-list-bg: #221214;
+      --error-list-border: #5d1c1f;
+      --error-list-hover: #361719;
+      --error-line-bg: rgba(248, 113, 113, 0.15);
+      --error-line-border: rgba(248, 113, 113, 0.6);
+
+      --tree-hover: #182235;
+      --tree-active: #13253d;
+      --tree-folder: #e5e7eb;
+      --tree-file: #cbd5e1;
+      --tree-muted: #94a3b8;
+
+      --input-bg: #0f172a;
+      --output-bg: #0f172a;
+      --code-bg: #0f172a;
+      --code-text: #e5e7eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Open Sans", sans-serif;
+      overflow: auto;
+    }
+
+    body { margin: 0; }
+
+    .app {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+    }
+
+    .topbar {
+      min-height: 60px;
+      background: var(--topbar-bg);
+      color: var(--topbar-text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--topbar-border);
+      box-shadow: var(--shadow);
+      user-select: none;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      min-width: 0;
+    }
+
+    .brand img {
+      height: 34px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .brand span {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      width: 100%;
+      flex: 1;
+    }
+
+    .btn, .btn-outline {
+      border: 1px solid transparent;
+      background: var(--accent);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 1;
+      transition: 0.15s ease;
+      user-select: none;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      white-space: nowrap;
+    }
+
+    .btn:hover { background: var(--accent-hover); }
+    .btn.secondary { background: #5f6368; }
+    .btn.secondary:hover { background: #4f5459; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #c62828; }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-outline:hover { background: rgba(127, 127, 127, 0.08); }
+
+    .status {
+      min-width: 180px;
+      text-align: right;
+      font-size: 12px;
+      color: var(--text);
+      opacity: 0.95;
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+      align-items: stretch;
+    }
+
+    .editor-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      border-right: 1px solid var(--border);
+      background: var(--panel);
+    }
+
+    .editor-tabs {
+      height: 42px;
+      display: flex;
+      align-items: stretch;
+      background: var(--panel-2);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: thin;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 170px;
+      max-width: 260px;
+      padding: 0 14px;
+      background: var(--tab-bg);
+      color: var(--text);
+      border-right: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      white-space: nowrap;
+      transition: 0.15s ease;
+      user-select: none;
+    }
+
+    .tab:hover { background: var(--tab-hover-bg); }
+    .tab.active {
+      background: var(--tab-active-bg);
+      color: var(--text);
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .tab .file-icon {
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+
+    .tab .unsaved {
+      color: var(--warning);
+      font-weight: 800;
+    }
+
+    .tab-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tab-close {
+      margin-left: auto;
+      border: none;
+      background: transparent;
+      color: #8b95a5;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+
+    .tab-close:hover {
+      background: rgba(0,0,0,0.06);
+      color: var(--text);
+    }
+
+    .new-tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: 700;
+      padding: 0 14px;
+      min-width: 44px;
+      transition: 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .new-tab-btn:hover {
+      background: rgba(66, 133, 244, 0.12);
+      color: var(--accent-hover);
+    }
+
+    .editor-container {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      background: var(--code-bg);
+    }
+
+    #editor {
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+    }
+
+    .sidebar {
+      width: 400px;
+      max-width: 42vw;
+      min-width: 320px;
+      display: flex;
+      flex-direction: column;
+      background: var(--sidebar);
+      min-height: 0;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-title {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      background: var(--panel-3);
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      user-select: none;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .panel-body {
+      background: var(--panel);
+      min-height: 0;
+    }
+
+    #input {
+      width: 100%;
+      height: 160px;
+      background: var(--input-bg);
+      color: var(--text);
+      border: none;
+      resize: vertical;
+      outline: none;
+      padding: 12px;
+      font-size: 13px;
+      font-family: "Roboto Mono", monospace;
+      border-radius: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #output, #terminal {
+      flex: 1;
+      background: var(--output-bg);
+      color: var(--text);
+      padding: 12px;
+      overflow: auto;
+      white-space: pre-wrap;
+      font-size: 13px;
+      font-family: "Roboto Mono", monospace;
+      min-height: 130px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .terminal {
+      background: var(--terminal-bg);
+      color: var(--terminal-text);
+      border-top: 1px solid var(--terminal-border);
+    }
+
+    .terminal .prompt {
+      color: #22c55e;
+      font-weight: 700;
+    }
+
+    .terminal-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--terminal-text);
+      font-family: "Roboto Mono", monospace;
+      padding: 12px;
+      border-top: 1px solid var(--terminal-border);
+    }
+
+    .error-list {
+      background: var(--error-list-bg);
+      border-top: 1px solid var(--error-list-border);
+      max-height: 200px;
+      overflow: auto;
+      font-family: "Roboto Mono", monospace;
+      font-size: 12px;
+    }
+
+    .error-item {
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(127, 127, 127, 0.12);
+      cursor: pointer;
+      color: var(--text);
+      transition: 0.15s ease;
+    }
+
+    .error-item:hover {
+      background: var(--error-list-hover);
+    }
+
+    .error-item strong {
+      color: var(--danger);
+    }
+
+    .stats {
+      background: var(--output-bg);
+      padding: 12px;
+      line-height: 1.9;
+      font-family: "Roboto Mono", monospace;
+      color: var(--text);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+    .good { color: var(--success); }
+    .warn { color: var(--warning); }
+    .bad  { color: var(--danger); }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 10px 12px 12px;
+      border-top: 1px solid var(--border);
+      background: var(--panel-2);
+      line-height: 1.5;
+    }
+
+    .hint code {
+      font-family: "Roboto Mono", monospace;
+      color: #2563eb;
+      background: rgba(37, 99, 235, 0.08);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .file-input-hidden { display: none; }
+
+    .project-tree {
+      border-top: 1px solid var(--border);
+      background: var(--panel);
+      max-height: 240px;
+      overflow: auto;
+      padding: 10px 12px;
+      font-family: "Roboto Mono", monospace;
+      font-size: 12px;
+    }
+
+    .tree-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      color: var(--tree-file);
+    }
+
+    .tree-item:hover { background: var(--tree-hover); }
+    .tree-item.active { background: var(--tree-active); }
+    .tree-folder { font-weight: 700; color: var(--tree-folder); }
+    .tree-file { color: var(--tree-file); }
+
+    .searchbar {
+      display: flex;
+      gap: 6px;
+      padding: 8px;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel-2);
+      flex-wrap: wrap;
+    }
+
+    .searchbar input {
+      flex: 1;
+      min-width: 120px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+      font-family: "Roboto Mono", monospace;
+      font-size: 12px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--modal-overlay);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 16px;
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal {
+      width: 100%;
+      max-width: 560px;
+      background: var(--modal-bg);
+      color: var(--modal-text);
+      border: 1px solid var(--modal-border);
+      border-radius: 14px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--modal-border);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .modal-body {
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .modal-body .field {
+      margin-top: 12px;
+    }
+
+    .modal-body input, .modal-body textarea {
+      width: 100%;
+      margin-top: 6px;
+      padding: 11px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+      font-family: "Roboto Mono", monospace;
+    }
+
+    .modal-body textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .modal-body input:focus, .modal-body textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.15);
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 14px 16px 16px;
+      border-top: 1px solid var(--modal-border);
+      background: rgba(127,127,127,0.03);
+    }
+
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: "Roboto Mono", monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .file-warning {
+      color: var(--warning);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .main { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+        border-top: 1px solid var(--border);
+      }
+      .editor-wrap { border-right: none; }
+      .status { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <img src="image(7).png" alt="Minh IDE" />
+        <span>Minh IDE Pro</span>
+      </div>
+
+      <div class="top-actions">
+        <div class="status" id="status">Ready</div>
+        <button class="btn-outline" id="themeBtn" onclick="toggleTheme()">🌓 Dark Mode</button>
+        <button class="btn-outline" onclick="openSearchDialog()">🔎 Search</button>
+        <button class="btn-outline" id="renameBtn" onclick="openRenameDialog()">✎ Đổi tên</button>
+        <button class="btn-outline" id="newFolderBtn" onclick="openFolderDialog()">📁 New folder</button>
+        <button class="btn-outline" id="newFileBtn" onclick="newTab()">📄 New file</button>
+        <button class="btn-outline" id="openBtn" onclick="document.getElementById('fileInput').click()">📂 Mở file</button>
+        <button class="btn-outline" onclick="saveCurrentFile()">💾 Save file</button>
+        <button class="btn-outline" onclick="restoreBackup()">♻ Restore Backup</button>
+        <button class="btn" id="runBtn" onclick="runCode()">▶ Run</button>
+        <button class="btn danger" id="cancelBtn" onclick="cancelAction()" style="display:none;">✖ Cancel</button>
+        <button class="btn secondary" onclick="downloadProject()">⬇ Download Project</button>
+      </div>
+    </div>
+
+    <input id="fileInput" class="file-input-hidden" type="file" multiple accept=".cpp,.cc,.cxx,.c,.h,.hpp,.hh,.inc,.inl,.ipp,.tpp,.txt,.java,.py,.js,.ts,.html,.css,.json,.md,text/plain" />
+
+    <div class="main">
+      <div class="editor-wrap">
+        <div class="editor-tabs" id="editorTabs"></div>
+
+        <div class="searchbar">
+          <input id="searchInput" placeholder="Search in current file..." />
+          <input id="replaceInput" placeholder="Replace with..." />
+          <button class="btn-outline" onclick="findNext()">Find next</button>
+          <button class="btn-outline" onclick="replaceOne()">Replace</button>
+          <button class="btn-outline" onclick="replaceAll()">Replace all</button>
+        </div>
+
+        <div class="editor-container">
+          <div id="editor"></div>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="panel" style="flex: 0 0 auto;">
+          <div class="panel-title">
+            <span>INPUT</span>
+            <div class="small-actions">
+              <button class="btn-outline" style="padding: 5px 10px;" onclick="clearInput()">Clear</button>
+            </div>
+          </div>
+          <textarea id="input" spellcheck="false">5 7</textarea>
+        </div>
+
+        <div class="panel" style="flex: 1 1 auto;">
+          <div class="panel-title">
+            <span>OUTPUT</span>
+            <div class="small-actions">
+              <button class="btn-outline" style="padding: 5px 10px;" onclick="copyOutput()">Copy</button>
+            </div>
+          </div>
+          <div id="output">Output...</div>
+          <div id="errorList" class="error-list" style="display:none;"></div>
+        </div>
+
+        <div class="panel" style="flex: 0 0 auto;">
+          <div class="panel-title">
+            <span>TERMINAL</span>
+            <div class="small-actions">
+              <button class="btn-outline" style="padding: 5px 10px;" onclick="clearTerminal()">Clear</button>
+            </div>
+          </div>
+          <div id="terminal" class="terminal"></div>
+          <input id="terminalInput" class="terminal-input" placeholder="Type help, tree, run, ls..." />
+        </div>
+
+        <div class="panel" style="flex: 0 0 auto;">
+          <div class="panel-title">
+            <span>PROJECT TREE</span>
+            <div class="small-actions">
+              <button class="btn-outline" style="padding: 5px 10px;" onclick="newTab()">New file</button>
+            </div>
+          </div>
+          <div class="project-tree" id="projectTree"></div>
+        </div>
+
+        <div class="panel" style="flex: 0 0 auto;">
+          <div class="panel-title">RESULT</div>
+          <div class="stats">
+            <div>Syntax Check: <span id="syntaxState" class="good">OK</span></div>
+            <div>Execution Time: <span id="time" class="good">0 ms</span></div>
+            <div>Memory: <span id="memory" class="good">0 KB</span></div>
+            <div>Complexity: <span id="complexity" class="warn">Unknown</span></div>
+            <div>Detected: <span id="detectedAlgo" class="good">—</span></div>
+            <div class="version-badge">Backup: <span id="backupState">none</span></div>
+          </div>
+          <div class="hint">
+            Phím tắt: <code>Ctrl + Enter</code> để chạy, <code>Ctrl + S</code> để tải code, <code>Ctrl + O</code> để mở file, <code>Ctrl + F</code> để search.
+            <div class="footer-note">
+              Hỗ trợ multi-file, project tree, backup phục hồi, search/replace, terminal, và phân tích thuật toán cơ bản.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-header" id="modalTitle">Dialog</div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer" id="modalFooter"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
+  <script>
+    require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs' } });
+
+    window.MonacoEnvironment = {
+      getWorkerUrl: function () {
+        return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+          self.MonacoEnvironment = { baseUrl:'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/' };
+          importScripts('https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/base/worker/workerMain.js');
+        `)}`;
+      }
+    };
+
+    let editor;
+    let running = false;
+    let abortController = null;
+    let lintTimer = null;
+    let tabs = [];
+    let activeTabId = null;
+    let tabCounter = 1;
+    let currentTheme = localStorage.getItem("minh_ide_theme") || "light";
+    let lastCursorState = null;
+
+    const MAX_FILE_SIZE = 256 * 1024;
+    const MAX_TOTAL_FILES = 50;
+    const ALLOWED_EXTENSIONS = new Set(["cpp","cc","cxx","c","h","hpp","hh","inc","inl","ipp","tpp","txt","java","py","js","ts","html","css","json","md"]);
+    const BASE_STORAGE_KEY = "minh_ide_project_v5";
+    const BACKUP_STORAGE_KEY = "minh_ide_project_v5_backup";
+
+    const DEFAULT_MAIN = `#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cout << "Hello, world!" << endl;
+    return 0;
+}`;
+
+    const DEFAULT_HEADER = `#pragma once
+#include <bits/stdc++.h>
+using namespace std;
+`;
+
+    function applyTheme() {
+      document.body.classList.toggle("dark", currentTheme === "dark");
+      const btn = document.getElementById("themeBtn");
+      btn.innerText = currentTheme === "dark" ? "☀ Light Mode" : "🌓 Dark Mode";
+      if (editor && window.monaco) {
+        monaco.editor.setTheme(currentTheme === "dark" ? "vs-dark" : "vs");
+      }
+      localStorage.setItem("minh_ide_theme", currentTheme);
+    }
+
+    function toggleTheme() {
+      currentTheme = currentTheme === "dark" ? "light" : "dark";
+      applyTheme();
+    }
+
+    function setStatus(text) { document.getElementById("status").innerText = text; }
+    function setOutput(text, color = null) { const output = document.getElementById("output"); output.style.color = color || "var(--text)"; output.innerText = text; }
+    function setSyntaxState(text, cls = "good") { const el = document.getElementById("syntaxState"); el.className = cls; el.innerText = text; }
+    function resetStats() { document.getElementById("time").innerText = "0 ms"; document.getElementById("memory").innerText = "0 KB"; }
+    function setBackupState(text) { document.getElementById("backupState").innerText = text; }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;").replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+    }
+
+    function sanitizePath(path) {
+      return String(path || "").trim().replace(/\\+/g, "/").replace(/^\/+/, "").replace(/\/+/g, "/");
+    }
+
+    function sanitizeName(name) {
+      return String(name || "").trim().replace(/[\\/:*?"<>|]/g, "");
+    }
+
+    function fileExt(name) { return (name.split(".").pop() || "").toLowerCase(); }
+    function isAllowedExtension(name) { return ALLOWED_EXTENSIONS.has(fileExt(name)); }
+    function isValidFileName(name) {
+      name = sanitizeName(name);
+      if (!name || name.includes("/")) return false;
+      return /^[A-Za-z0-9._-]+$/.test(name) && isAllowedExtension(name);
+    }
+
+    function inferFileType(name) {
+      const ext = fileExt(name);
+      if (["h", "hpp", "hh", "inc", "inl", "ipp", "tpp"].includes(ext)) return "header";
+      if (["cpp", "cc", "cxx", "c"].includes(ext)) return "source";
+      if (["py"].includes(ext)) return "python";
+      if (["js","ts"].includes(ext)) return "script";
+      return "other";
+    }
+
+    function fileIcon(name) {
+      const ext = fileExt(name);
+      const map = {
+        cpp: "🟦", cc: "🟦", cxx: "🟦", c: "🟦",
+        h: "📘", hpp: "📘", hh: "📘", inc: "📘", inl: "📘", ipp: "📘", tpp: "📘",
+        py: "🐍", js: "🟨", ts: "🔷",
+        html: "🌐", css: "🎨", json: "🧩", md: "📝", txt: "📄"
+      };
+      return map[ext] || "🗎";
+    }
+
+    function getDefaultContentForFile(name) {
+      const ext = fileExt(name);
+      if (["h", "hpp", "hh", "inc", "inl", "ipp", "tpp"].includes(ext)) return DEFAULT_HEADER;
+      if (["cpp", "cc", "cxx", "c"].includes(ext)) return DEFAULT_MAIN;
+      if (ext === "txt") return "5 7";
+      return "";
+    }
+
+    function detectLanguageByFileName(name) {
+      const ext = fileExt(name);
+      const map = { cpp:"cpp", cc:"cpp", cxx:"cpp", c:"c", h:"cpp", hpp:"cpp", hh:"cpp", inc:"cpp", inl:"cpp", ipp:"cpp", tpp:"cpp", js:"javascript", ts:"typescript", py:"python", java:"java", html:"html", css:"css", json:"json", md:"markdown", txt:"plaintext" };
+      return map[ext] || "plaintext";
+    }
+
+    function getActiveTab() { return tabs.find(t => t.id === activeTabId) || null; }
+
+    function showModal({ title, body, buttons = [] }) {
+      const overlay = document.getElementById("modalOverlay");
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalBody").innerHTML = body;
+      const modalFooter = document.getElementById("modalFooter");
+      modalFooter.innerHTML = "";
+      buttons.forEach(btn => {
+        const el = document.createElement("button");
+        el.className = btn.primary ? "btn" : "btn-outline";
+        el.textContent = btn.text;
+        el.onclick = () => btn.onClick && btn.onClick();
+        modalFooter.appendChild(el);
+      });
+      overlay.classList.add("show");
+    }
+
+    function closeModal() { document.getElementById("modalOverlay").classList.remove("show"); }
+
+    function validateFileNameUnique(newName, ignoreTabId = null) {
+      newName = sanitizeName(newName);
+      if (!isValidFileName(newName)) return "Tên file không hợp lệ.";
+      const duplicate = tabs.find(t => t.name.toLowerCase() === newName.toLowerCase() && t.id !== ignoreTabId);
+      if (duplicate) return `Tên file đã tồn tại: ${newName}`;
+      return null;
+    }
+
+    function setMonacoLanguageForActiveTab() {
+      if (!editor || !window.monaco) return;
+      const active = getActiveTab();
+      if (!active) return;
+      monaco.editor.setModelLanguage(editor.getModel(), detectLanguageByFileName(active.name));
+    }
+
+    function saveCursorState() {
+      if (!editor) return;
+      lastCursorState = { pos: editor.getPosition(), scroll: editor.saveViewState(), tabId: activeTabId };
+      saveProjectState(true);
+    }
+
+    function restoreCursorState() {
+      if (!editor || !lastCursorState) return;
+      if (lastCursorState.tabId !== activeTabId) return;
+      if (lastCursorState.scroll) editor.restoreViewState(lastCursorState.scroll);
+      if (lastCursorState.pos) editor.setPosition(lastCursorState.pos);
+    }
+
+    function saveProjectState(isBackup = false) {
+      if (!editor) return;
+      const payload = { theme: currentTheme, tabs, activeTabId, stdin: document.getElementById("input").value, cursor: lastCursorState, timestamp: Date.now() };
+      localStorage.setItem(BASE_STORAGE_KEY, JSON.stringify(payload));
+      if (isBackup) {
+        localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(payload));
+        setBackupState(new Date().toLocaleTimeString());
+      }
+    }
+
+    function loadProjectState() { try { return JSON.parse(localStorage.getItem(BASE_STORAGE_KEY) || "null"); } catch { return null; } }
+    function loadBackupState() { try { return JSON.parse(localStorage.getItem(BACKUP_STORAGE_KEY) || "null"); } catch { return null; } }
+
+    function renderProjectTree() {
+      const tree = document.getElementById("projectTree");
+      tree.innerHTML = "";
+      const groups = {};
+      tabs.forEach(tab => {
+        const path = sanitizePath(tab.path || tab.name);
+        const parts = path.split("/").filter(Boolean);
+        let folder = groups;
+        for (let i = 0; i < parts.length - 1; i++) {
+          const part = parts[i];
+          folder[part] = folder[part] || { __type: "folder", __children: {} };
+          folder = folder[part].__children;
+        }
+        const fileName = parts[parts.length - 1] || tab.name;
+        folder[fileName] = { __type: "file", tabId: tab.id, path };
+      });
+
+      function renderNode(obj, container, depth = 0) {
+        Object.keys(obj).sort((a,b)=>a.localeCompare(b)).forEach(key => {
+          const node = obj[key];
+          const item = document.createElement("div");
+          item.className = "tree-item " + (node.__type === "file" && node.tabId === activeTabId ? "active" : "");
+          item.style.marginLeft = `${depth * 10}px`;
+
+          if (node.__type === "folder") {
+            item.innerHTML = `<span>📁</span><span class="tree-folder">${escapeHtml(key)}</span>`;
+            container.appendChild(item);
+            const branch = document.createElement("div");
+            branch.style.marginLeft = "16px";
+            branch.style.borderLeft = "1px dashed var(--border)";
+            branch.style.paddingLeft = "10px";
+            container.appendChild(branch);
+            renderNode(node.__children, branch, depth + 1);
+          } else {
+            const tab = tabs.find(t => t.id === node.tabId);
+            item.innerHTML = `<span>${fileIcon(tab.name)}</span><span class="tree-file">${escapeHtml(node.path)}</span>`;
+            item.onclick = () => switchTab(tab.id);
+            container.appendChild(item);
+          }
+        });
+      }
+
+      renderNode(groups, tree, 0);
+
+      const note = document.createElement("div");
+      note.style.marginTop = "10px";
+      note.style.color = "var(--tree-muted)";
+      note.innerHTML = 'Tip: dùng đường dẫn thật như <b>src/main.cpp</b>, <b>include/util.hpp</b>.';
+      tree.appendChild(note);
+    }
+
+    function renderTabs() {
+      const tabsContainer = document.getElementById("editorTabs");
+      tabsContainer.innerHTML = "";
+      tabs.forEach(tab => {
+        const tabEl = document.createElement("div");
+        tabEl.className = "tab" + (tab.id === activeTabId ? " active" : "");
+        tabEl.onclick = () => switchTab(tab.id);
+        tabEl.innerHTML = `
+          <span class="file-icon">${fileIcon(tab.name)}</span>
+          <span class="tab-title">${escapeHtml(tab.path || tab.name)}</span>
+          ${tab.unsaved ? '<span class="unsaved">•</span>' : ''}
+          <button class="tab-close" title="Close tab">×</button>
+        `;
+        tabEl.querySelector(".tab-close").onclick = (e) => { e.stopPropagation(); confirmCloseTab(tab.id); };
+        tabsContainer.appendChild(tabEl);
+      });
+
+      const newBtn = document.createElement("button");
+      newBtn.className = "new-tab-btn";
+      newBtn.title = "New tab";
+      newBtn.innerText = "+";
+      newBtn.onclick = newTab;
+      tabsContainer.appendChild(newBtn);
+
+      renderProjectTree();
+    }
+
+    function createTab(name, code = "", path = null) {
+      const safeName = sanitizeName(name);
+      const finalName = safeName || `file_${tabCounter}.cpp`;
+      const err = validateFileNameUnique(finalName);
+      if (err) return showModal({ title: "Lỗi tên file", body: `<div>${escapeHtml(err)}</div>`, buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
+      if (tabs.length >= MAX_TOTAL_FILES) return showModal({ title: "Giới hạn", body: "Đã đạt giới hạn số lượng file.", buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
+
+      const id = "tab_" + Date.now() + "_" + tabCounter++;
+      const tab = { id, name: finalName, code, unsaved: false, path: sanitizePath(path || finalName) };
+      tabs.push(tab);
+      activeTabId = id;
+      renderTabs();
+      if (editor) editor.setValue(code);
+      setMonacoLanguageForActiveTab();
+      validateSyntax();
+      saveProjectState(true);
+    }
+
+    function newTab() {
+      const suggested = tabs.some(t => t.name.toLowerCase() === "main.cpp") ? `file_${tabCounter}.cpp` : "main.cpp";
+      createTab(suggested, getDefaultContentForFile(suggested), suggested);
+      appendTerminal(`Created file: ${suggested}`);
+    }
+
+    function switchTab(id) {
+      if (activeTabId === id) return;
+      saveActiveTabCode();
+      const selected = tabs.find(t => t.id === id);
+      if (!selected) return;
+      activeTabId = id;
+      if (editor) { editor.setValue(selected.code); editor.focus(); }
+      renderTabs();
+      setMonacoLanguageForActiveTab();
+      validateSyntax();
+      restoreCursorState();
+      saveProjectState();
+    }
+
+    function confirmCloseTab(id) {
+      const tab = tabs.find(t => t.id === id);
+      if (!tab) return;
+      showModal({
+        title: "Xác nhận",
+        body: `Bạn có muốn đóng file <b>${escapeHtml(tab.path || tab.name)}</b>?`,
+        buttons: [
+          { text: "Hủy", onClick: closeModal },
+          { text: "Đóng", primary: true, onClick: () => { closeModal(); closeTab(id); } }
+        ]
+      });
+    }
+
+    function closeTab(id) {
+      if (tabs.length === 1) {
+        tabs[0].code = DEFAULT_MAIN;
+        tabs[0].unsaved = false;
+        tabs[0].name = "main.cpp";
+        tabs[0].path = "main.cpp";
+        if (editor) editor.setValue(DEFAULT_MAIN);
+        renderTabs();
+        validateSyntax();
+        saveProjectState(true);
+        return;
+      }
+      const idx = tabs.findIndex(t => t.id === id);
+      if (idx === -1) return;
+      const closingActive = activeTabId === id;
+      tabs.splice(idx, 1);
+      if (closingActive) {
+        const nextTab = tabs[Math.max(0, idx - 1)] || tabs[0];
+        activeTabId = nextTab.id;
+        if (editor) editor.setValue(nextTab.code);
+      }
+      renderTabs();
+      setMonacoLanguageForActiveTab();
+      validateSyntax();
+      saveProjectState(true);
+    }
+
+    function saveActiveTabCode() {
+      const active = getActiveTab();
+      if (!active || !editor) return;
+      active.code = editor.getValue();
+      active.unsaved = false;
+      saveProjectState(true);
+    }
+
+    function openRenameDialog() {
+      const active = getActiveTab();
+      if (!active) return;
+      showModal({
+        title: "Đổi tên file",
+        body: `
+          <div>Nhập tên mới cho file <b>${escapeHtml(active.path || active.name)}</b></div>
+          <div class="field">
+            <input id="renameInput" value="${escapeHtml(active.path || active.name)}" />
+          </div>
+        `,
+        buttons: [
+          { text: "Hủy", onClick: closeModal },
+          { text: "Lưu", primary: true, onClick: () => renameActiveTab(document.getElementById("renameInput").value) }
+        ]
+      });
+      setTimeout(() => document.getElementById("renameInput")?.focus(), 50);
+    }
+
+    function renameActiveTab(newName = null) {
+      const active = getActiveTab();
+      if (!active || newName == null) return;
+      newName = sanitizePath(newName);
+      const baseName = newName.split("/").pop();
+      const err = validateFileNameUnique(baseName, active.id);
+      if (err) return showModal({ title: "Lỗi tên file", body: `<div>${escapeHtml(err)}</div>`, buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
+      if (!isValidFileName(baseName)) return showModal({ title: "Lỗi", body: "Tên file không hợp lệ.", buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
+      active.name = baseName;
+      active.path = newName;
+      renderTabs();
+      setMonacoLanguageForActiveTab();
+      validateSyntax();
+      saveProjectState(true);
+      closeModal();
+      setStatus(`Đã đổi tên thành ${newName}`);
+      appendTerminal(`Renamed to ${newName}`);
+    }
+
+    function openFolderDialog() {
+      showModal({
+        title: "Tạo thư mục",
+        body: `
+          <div>Nhập tên thư mục mới hoặc đường dẫn thư mục.</div>
+          <div class="field">
+            <input id="folderInput" placeholder="src/utils" />
+            <div class="file-warning">Thư mục sẽ hiển thị thật trong Project Tree.</div>
+          </div>
+        `,
+        buttons: [
+          { text: "Hủy", onClick: closeModal },
+          { text: "Tạo", primary: true, onClick: createFolderFromDialog }
+        ]
+      });
+      setTimeout(() => document.getElementById("folderInput")?.focus(), 50);
+    }
+
+    function createFolderFromDialog() {
+      const folderName = sanitizePath(document.getElementById("folderInput").value);
+      if (!folderName) return;
+      closeModal();
+      setStatus(`Đã tạo thư mục: ${folderName}`);
+      appendTerminal(`Created folder: ${folderName}`);
+      saveProjectState(true);
+    }
+
+    function handleFileOpen(event) {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+      files.forEach(file => {
+        if (file.size > MAX_FILE_SIZE) {
+          showModal({ title: "File quá lớn", body: `File <b>${escapeHtml(file.name)}</b> vượt quá giới hạn ${Math.round(MAX_FILE_SIZE / 1024)}KB.`, buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
+          return;
+        }
+        const ext = fileExt(file.name);
+        if (!ALLOWED_EXTENSIONS.has(ext)) {
+          showModal({ title: "Định dạng không hỗ trợ", body: `File <b>${escapeHtml(file.name)}</b> không thuộc định dạng mã nguồn cho phép.`, buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function () {
+          const content = String(reader.result || "");
+          const fileName = sanitizeName(file.name) || "untitled.txt";
+          const existing = tabs.find(t => t.path.toLowerCase() === fileName.toLowerCase() || t.name.toLowerCase() === fileName.toLowerCase());
+          if (existing) {
+            existing.code = content;
+            existing.unsaved = false;
+            existing.path = fileName;
+            existing.name = fileName.split("/").pop();
+            if (activeTabId === existing.id && editor) editor.setValue(content);
+          } else {
+            const id = "tab_" + Date.now() + "_" + tabCounter++;
+            tabs.push({ id, name: fileName.split("/").pop(), code: content, unsaved: false, path: fileName });
+            activeTabId = id;
+            if (editor) editor.setValue(content);
+          }
+          renderTabs();
+          setMonacoLanguageForActiveTab();
+          validateSyntax();
+          setStatus(`Đã mở: ${fileName}`);
+          appendTerminal(`Opened file: ${fileName}`);
+          saveProjectState(true);
+        };
+        reader.readAsText(file);
+      });
+      event.target.value = "";
+    }
+
+    function validateSyntax() {
+      if (!editor || !window.monaco) return;
+      const model = editor.getModel();
+      monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({ noSemanticValidation: false, noSyntaxValidation: false });
+      monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
+      const active = getActiveTab();
+      if (active) monaco.editor.setModelLanguage(model, detectLanguageByFileName(active.name));
+      updateProblemIndicators();
+      analyzeAlgorithm();
+      saveProjectState();
+    }
+
+    function updateProblemIndicators() {
+      if (!editor || !window.monaco) return;
+      const model = editor.getModel();
+      const markers = monaco.editor.getModelMarkers({ resource: model.uri });
+      const errorCount = markers.filter(m => m.severity === monaco.MarkerSeverity.Error).length;
+      const warningCount = markers.filter(m => m.severity === monaco.MarkerSeverity.Warning).length;
+
+      const errorList = document.getElementById("errorList");
+      if (errorCount > 0 || warningCount > 0) {
+        errorList.style.display = "block";
+        errorList.innerHTML = "";
+        markers.forEach(m => {
+          const item = document.createElement("div");
+          item.className = "error-item";
+          item.innerHTML = `<strong>${m.severity === monaco.MarkerSeverity.Error ? "Error" : "Warning"}:</strong> ${escapeHtml(m.message)} <span style="opacity:.7">[${m.startLineNumber}:${m.startColumn}]</span>`;
+          item.onclick = () => jumpToMarker(m);
+          errorList.appendChild(item);
+        });
+      } else {
+        errorList.style.display = "none";
+        errorList.innerHTML = "";
+      }
+
+      if (errorCount > 0) { setStatus(`Syntax Error: ${errorCount} lỗi`); setSyntaxState(`${errorCount} lỗi`, "bad"); }
+      else if (warningCount > 0) { setStatus(`Warning: ${warningCount} cảnh báo`); setSyntaxState(`${warningCount} cảnh báo`, "warn"); }
+      else { setStatus(running ? "Running..." : "Ready"); setSyntaxState("OK", "good"); }
+    }
+
+    function jumpToMarker(m) { if (!editor) return; editor.revealLineInCenter(m.startLineNumber); editor.setPosition({ lineNumber: m.startLineNumber, column: m.startColumn }); editor.focus(); }
+
+    function analyzeAlgorithm() {
+      const active = getActiveTab();
+      if (!active) return;
+      const code = active.code || "";
+      let result = "Unknown";
+      if (/sort\s*\(/.test(code) || /std::sort/.test(code)) result = "O(n log n)";
+      else if (/for\s*\(.*\)\s*{[\s\S]*for\s*\(/.test(code)) result = "O(n²) likely";
+      else if (/while\s*\(.*\)\s*{[\s\S]*while\s*\(/.test(code)) result = "Check loops";
+      else if (/binary_search|lower_bound|upper_bound/.test(code)) result = "O(log n)";
+      else if (/dfs|bfs|dijkstra|bellman|floyd/.test(code)) result = "Graph algorithm";
+      document.getElementById("complexity").innerText = result;
+
+      let algo = "General code";
+      if (/binary_search/.test(code)) algo = "Binary Search";
+      else if (/sort/.test(code)) algo = "Sorting";
+      else if (/dfs/.test(code)) algo = "DFS";
+      else if (/bfs/.test(code)) algo = "BFS";
+      else if (/dijkstra/.test(code)) algo = "Dijkstra";
+      document.getElementById("detectedAlgo").innerText = algo;
+    }
+
+    function collectIncludesRecursive(entryName, visited = new Set()) {
+      const filesByName = new Map();
+      tabs.forEach(t => { filesByName.set(t.name, t); filesByName.set(t.path, t); });
+      const result = [];
+      function visit(name) {
+        const tab = filesByName.get(name);
+        if (!tab || visited.has(tab.id)) return;
+        visited.add(tab.id);
+        const code = tab.code || "";
+        const regex = /^\s*#include\s+"([^"]+)"/gm;
+        let match;
+        while ((match = regex.exec(code)) !== null) visit(match[1]);
+        result.push(tab);
+      }
+      visit(entryName);
+      return result;
+    }
+
+    function buildSubmissionSource() {
+      const main = tabs.find(t => t.name.toLowerCase() === "main.cpp") || tabs.find(t => inferFileType(t.name) === "source") || tabs[0];
+      const ordered = collectIncludesRecursive(main ? main.name : "main.cpp");
+      return {
+        main: main ? main.name : "main.cpp",
+        files: ordered.map(t => ({ name: t.path || t.name, code: t.code }))
+      };
+    }
+
+    async function runCode() {
+      if (running) return;
+      running = true;
+
+      const timeDiv = document.getElementById("time");
+      const memoryDiv = document.getElementById("memory");
+      const runBtn = document.getElementById("runBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+
+      runBtn.style.display = "none";
+      cancelBtn.style.display = "inline-block";
+
+      saveActiveTabCode();
+      saveProjectState(true);
+      setOutput("Running...", null);
+      setStatus("Preparing bundle...");
+      resetStats();
+      appendTerminal("Run command started.");
+
+      try {
+        abortController = new AbortController();
+        const payload = buildSubmissionSource();
+
+        const create = await fetch("https://ce.judge0.com/submissions?base64_encoded=false&wait=false", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: abortController.signal,
+          body: JSON.stringify({
+            language_id: 54,
+            source_code: `// Project bundle\n/*${JSON.stringify(payload)}*/`,
+            stdin: document.getElementById("input").value
+          })
+        });
+
+        const createData = await create.json();
+        if (!createData.token) throw new Error("Cannot create submission");
+
+        let result = null;
+        let retry = 0;
+        while (retry < 100) {
+          if (abortController.signal.aborted) throw new Error("Cancelled");
+          const res = await fetch(`https://ce.judge0.com/submissions/${createData.token}?base64_encoded=false`);
+          result = await res.json();
+          if (result.status && result.status.id > 2) break;
+          retry++;
+          await new Promise(r => setTimeout(r, 300));
+        }
+
+        if (!result) throw new Error("No result");
+        if (retry >= 100) throw new Error("Judge timeout");
+
+        timeDiv.innerText = `${result.time ? Math.round(parseFloat(result.time) * 1000) : 0} ms`;
+        memoryDiv.innerText = `${result.memory ? Math.round(parseFloat(result.memory)) : 0} KB`;
+        setStatus(result.status ? result.status.description : "Done");
+
+        if (result.compile_output) return setOutput(result.compile_output, "#e53935");
+        if (result.stderr) return setOutput(result.stderr, "#e53935");
+        if (result.status && result.status.id === 6) return setOutput(result.status.description, "#e53935");
+        setOutput(result.stdout || "No output", null);
+        appendTerminal("Run finished successfully.");
+      } catch (err) {
+        if (err.name === "AbortError" || err.message === "Cancelled") {
+          setOutput("Cancelled", "#f4b400");
+          appendTerminal("Run cancelled.");
+        } else {
+          setStatus("Error");
+          setOutput(err.message, "#e53935");
+          appendTerminal("Error: " + err.message);
+        }
+      } finally {
+        running = false;
+        abortController = null;
+        runBtn.style.display = "inline-block";
+        cancelBtn.style.display = "none";
+      }
+    }
+
+    function cancelAction() {
+      if (abortController) abortController.abort();
+      running = false;
+      setStatus("Cancelled");
+      setOutput("Cancelled", "#f4b400");
+      appendTerminal("Cancelled by user.");
+      document.getElementById("runBtn").style.display = "inline-block";
+      document.getElementById("cancelBtn").style.display = "none";
+    }
+
+    function downloadCode() {
+      try {
+        saveActiveTabCode();
+        const active = getActiveTab();
+        const code = editor ? editor.getValue() : DEFAULT_MAIN;
+        const fileName = active?.path || active?.name || "main.cpp";
+        const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        appendTerminal(`Downloaded file: ${fileName}`);
+      } catch (e) {
+        setOutput("Download failed: " + e.message, "#e53935");
+      }
+    }
+
+    function downloadProject() {
+      saveActiveTabCode();
+      const blob = makeZip(tabs.map(t => ({ name: t.path || t.name, content: t.code })));
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "project.zip";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      appendTerminal("Project exported as ZIP.");
+    }
+
+    function clearInput() { document.getElementById("input").value = ""; saveProjectState(true); }
+    async function copyOutput() { const text = document.getElementById("output").innerText; try { await navigator.clipboard.writeText(text); setStatus("Copied output"); } catch { setStatus("Copy failed"); } }
+    function saveCurrentFile() { saveActiveTabCode(); downloadCode(); setStatus("Saved"); setOutput("Saved current file", "#34a853"); }
+
+    function openSearchDialog() {
+      showModal({
+        title: "Search / Replace",
+        body: `
+          <div>Tìm và thay thế trong file hiện tại.</div>
+          <div class="field">
+            <label>Từ khóa tìm</label>
+            <input id="dlgSearch" placeholder="example" />
+          </div>
+          <div class="field">
+            <label>Thay bằng</label>
+            <input id="dlgReplace" placeholder="newText" />
+          </div>
+        `,
+        buttons: [
+          { text: "Đóng", onClick: closeModal },
+          { text: "Search", primary: true, onClick: () => { closeModal(); findNext(); } }
+        ]
+      });
+      setTimeout(() => document.getElementById("dlgSearch")?.focus(), 50);
+    }
+
+    function findNext() {
+      if (!editor) return;
+      const term = document.getElementById("searchInput").value || document.getElementById("dlgSearch")?.value || "";
+      if (!term) return;
+      editor.getAction("actions.find").run();
+      setTimeout(() => editor.trigger("keyboard", "actions.find", { searchString: term }), 50);
+      appendTerminal(`Search: ${term}`);
+    }
+
+    function replaceOne() {
+      if (!editor) return;
+      const search = document.getElementById("searchInput").value;
+      const replace = document.getElementById("replaceInput").value;
+      if (!search) return;
+      const value = editor.getValue();
+      const idx = value.indexOf(search);
+      if (idx === -1) return;
+      editor.setValue(value.substring(0, idx) + replace + value.substring(idx + search.length));
+      appendTerminal(`Replaced one: ${search} -> ${replace}`);
+    }
+
+    function replaceAll() {
+      if (!editor) return;
+      const search = document.getElementById("searchInput").value;
+      const replace = document.getElementById("replaceInput").value;
+      if (!search) return;
+      editor.setValue(editor.getValue().split(search).join(replace));
+      appendTerminal(`Replaced all: ${search} -> ${replace}`);
+    }
+
+    function clearTerminal() {
+      document.getElementById("terminal").innerHTML = "";
+    }
+
+    function appendTerminal(message) {
+      const terminal = document.getElementById("terminal");
+      const line = document.createElement("div");
+      line.innerHTML = `<span class="prompt">minh@ide</span>: ${escapeHtml(message)}`;
+      terminal.appendChild(line);
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function restoreBackup() {
+      const saved = loadBackupState();
+      if (!saved) return showModal({ title: "Restore Backup", body: "Không tìm thấy backup.", buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
+      tabs = saved.tabs || [];
+      activeTabId = saved.activeTabId || (tabs[0] && tabs[0].id);
+      currentTheme = saved.theme || currentTheme;
+      document.getElementById("input").value = saved.stdin || "";
+      lastCursorState = saved.cursor || null;
+      applyTheme();
+      if (editor && getActiveTab()) editor.setValue(getActiveTab().code || "");
+      renderTabs();
+      validateSyntax();
+      setBackupState(saved.timestamp ? new Date(saved.timestamp).toLocaleTimeString() : "restored");
+      appendTerminal("Backup restored.");
+      setStatus("Backup restored");
+      saveProjectState(true);
+    }
+
+    function makeZip(files) {
+      const textEncoder = new TextEncoder();
+      const crcTable = (() => {
+        let c; const table = [];
+        for (let n = 0; n < 256; n++) {
+          c = n;
+          for (let k = 0; k < 8; k++) c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+          table[n] = c >>> 0;
+        }
+        return table;
+      })();
+      const crc32 = (u8) => {
+        let crc = 0 ^ (-1);
+        for (let i = 0; i < u8.length; i++) crc = (crc >>> 8) ^ crcTable[(crc ^ u8[i]) & 0xFF];
+        return (crc ^ (-1)) >>> 0;
+      };
+      const dosTime = (date) => {
+        const d = date || new Date();
+        return {
+          time: ((d.getHours() & 31) << 11) | ((d.getMinutes() & 63) << 5) | Math.floor(d.getSeconds() / 2),
+          date: (((d.getFullYear() - 1980) & 127) << 9) | ((d.getMonth() + 1) << 5) | d.getDate()
+        };
+      };
+      const records = [];
+      const central = [];
+      let offset = 0;
+      const dt = dosTime(new Date());
+      files.forEach(file => {
+        const nameBytes = textEncoder.encode(file.name);
+        const data = textEncoder.encode(file.content);
+        const crc = crc32(data);
+        const local = new Uint8Array(30 + nameBytes.length + data.length);
+        const lv = new DataView(local.buffer);
+        lv.setUint32(0, 0x04034b50, true);
+        lv.setUint16(4, 20, true);
+        lv.setUint16(6, 0, true);
+        lv.setUint16(8, 0, true);
+        lv.setUint16(10, dt.time, true);
+        lv.setUint16(12, dt.date, true);
+        lv.setUint32(14, crc, true);
+        lv.setUint32(18, data.length, true);
+        lv.setUint32(22, data.length, true);
+        lv.setUint16(26, nameBytes.length, true);
+        lv.setUint16(28, 0, true);
+        local.set(nameBytes, 30);
+        local.set(data, 30 + nameBytes.length);
+        records.push(local);
+
+        const cen = new Uint8Array(46 + nameBytes.length);
+        const cv = new DataView(cen.buffer);
+        cv.setUint32(0, 0x02014b50, true);
+        cv.setUint16(4, 20, true);
+        cv.setUint16(6, 20, true);
+        cv.setUint16(8, 0, true);
+        cv.setUint16(10, 0, true);
+        cv.setUint16(12, dt.time, true);
+        cv.setUint16(14, dt.date, true);
+        cv.setUint32(16, crc, true);
+        cv.setUint32(20, data.length, true);
+        cv.setUint32(24, data.length, true);
+        cv.setUint16(28, nameBytes.length, true);
+        cv.setUint16(30, 0, true);
+        cv.setUint16(32, 0, true);
+        cv.setUint16(34, 0, true);
+        cv.setUint16(36, 0, true);
+        cv.setUint32(38, 0, true);
+        cv.setUint32(42, offset, true);
+        cen.set(nameBytes, 46);
+        central.push(cen);
+        offset += local.length;
+      });
+
+      const centralSize = central.reduce((s, a) => s + a.length, 0);
+      const end = new Uint8Array(22);
+      const ev = new DataView(end.buffer);
+      ev.setUint32(0, 0x06054b50, true);
+      ev.setUint16(8, files.length, true);
+      ev.setUint16(10, files.length, true);
+      ev.setUint32(12, centralSize, true);
+      ev.setUint32(16, offset, true);
+      ev.setUint16(20, 0, true);
+      return new Blob([...records, ...central, end], { type: "application/zip" });
+    }
+
+    window.addEventListener("beforeunload", () => saveProjectState(true));
+
+    require(['vs/editor/editor.main'], function () {
+      applyTheme();
+
+      editor = monaco.editor.create(document.getElementById('editor'), {
+        value: DEFAULT_MAIN,
+        language: 'cpp',
+        theme: currentTheme === "dark" ? 'vs-dark' : 'vs',
+        automaticLayout: true,
+        fontSize: 15,
+        fontFamily: 'Roboto Mono',
+        minimap: { enabled: true },
+        scrollBeyondLastLine: true,
+        renderLineHighlight: 'all',
+        smoothScrolling: true,
+        bracketPairColorization: { enabled: true },
+        guides: { bracketPairs: true, indentation: true }
+      });
+
+      const saved = loadProjectState() || loadBackupState();
+
+      if (saved && Array.isArray(saved.tabs) && saved.tabs.length) {
+        tabs = saved.tabs.map((t, i) => ({
+          id: t.id || `tab_${Date.now()}_${i}`,
+          name: t.name || `file_${i + 1}.cpp`,
+          code: typeof t.code === "string" ? t.code : "",
+          unsaved: !!t.unsaved,
+          path: t.path || t.name || `file_${i + 1}.cpp`
+        }));
+        activeTabId = saved.activeTabId && tabs.some(t => t.id === saved.activeTabId) ? saved.activeTabId : tabs[0].id;
+        currentTheme = saved.theme || currentTheme;
+        applyTheme();
+        document.getElementById("input").value = saved.stdin || "5 7";
+        lastCursorState = saved.cursor || null;
+        const active = getActiveTab();
+        if (active) editor.setValue(active.code);
+      } else {
+        tabs = [
+          { id: "tab_1", name: "main.cpp", code: DEFAULT_MAIN, unsaved: false, path: "main.cpp" },
+          { id: "tab_2", name: "lib.hpp", code: DEFAULT_HEADER, unsaved: false, path: "include/lib.hpp" }
+        ];
+        activeTabId = "tab_1";
+        editor.setValue(DEFAULT_MAIN);
+        document.getElementById("input").value = "5 7";
+      }
+
+      renderTabs();
+      setMonacoLanguageForActiveTab();
+      validateSyntax();
+      resetStats();
+      setStatus("Ready");
+      setBackupState(saved?.timestamp ? new Date(saved.timestamp).toLocaleTimeString() : "none");
+      restoreCursorState();
+      appendTerminal("IDE ready.");
+
+      editor.onDidChangeModelContent(function () {
+        const active = getActiveTab();
+        if (active) {
+          active.code = editor.getValue();
+          active.unsaved = true;
+        }
+        clearTimeout(lintTimer);
+        lintTimer = setTimeout(() => validateSyntax(), 80);
+        saveProjectState();
+      });
+
+      editor.onDidChangeCursorPosition(saveCursorState);
+      editor.onDidScrollChange(saveCursorState);
+
+      document.getElementById("input").addEventListener("input", function () { saveProjectState(true); });
+      document.getElementById("themeBtn").innerText = currentTheme === "dark" ? "☀ Light Mode" : "🌓 Dark Mode";
+
+      document.getElementById("terminalInput").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          const cmd = this.value.trim();
+          if (!cmd) return;
+          appendTerminal(`> ${cmd}`);
+          if (cmd === "help") {
+            appendTerminal("Commands: help, tree, run, ls, clear, backup, restore");
+          } else if (cmd === "tree" || cmd === "ls") {
+            appendTerminal(tabs.map(t => `- ${t.path || t.name}`).join("\n"));
+          } else if (cmd === "run") {
+            runCode();
+          } else if (cmd === "clear") {
+            clearTerminal();
+          } else if (cmd === "backup") {
+            saveProjectState(true);
+            appendTerminal("Backup saved.");
+          } else if (cmd === "restore") {
+            restoreBackup();
+          } else {
+            appendTerminal("Unknown command. Type help.");
+          }
+          this.value = "";
+        }
+      });
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.ctrlKey && e.key.toLowerCase() === "s") { e.preventDefault(); downloadCode(); }
+      if (e.ctrlKey && e.key === "Enter") { e.preventDefault(); runCode(); }
+      if (e.ctrlKey && e.key.toLowerCase() === "o") { e.preventDefault(); document.getElementById("fileInput").click(); }
+      if (e.ctrlKey && e.key.toLowerCase() === "r") { e.preventDefault(); openRenameDialog(); }
+      if (e.ctrlKey && e.key.toLowerCase() === "f") { e.preventDefault(); openSearchDialog(); }
+    });
+
+    document.getElementById("fileInput").addEventListener("change", handleFileOpen);
+    document.getElementById("modalOverlay").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
+  </script>
+</body>
+</html>
