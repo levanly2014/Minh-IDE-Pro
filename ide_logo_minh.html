@@ -11,23 +11,23 @@
 
   <style>
     :root {
-      --bg: #f5f6fa;
+      --bg: #f5f7fb;
       --panel: #ffffff;
-      --panel-2: #f8f9fb;
-      --panel-3: #eef1f6;
-      --border: #d9dee8;
-      --text: #222222;
-      --muted: #6b7280;
+      --panel-2: #f8fafc;
+      --panel-3: #eef2f7;
+      --border: #d9e0ea;
+      --text: #1f2937;
+      --muted: #64748b;
       --accent: #4285f4;
       --accent-hover: #2f6fe4;
       --danger: #e53935;
       --warning: #f4b400;
-      --success: #34a853;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --success: #2fa84f;
+      --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 
       --topbar-bg: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
-      --topbar-text: #222222;
-      --topbar-border: #d9dee8;
+      --topbar-text: #1f2937;
+      --topbar-border: #d9e0ea;
 
       --tab-bg: #eef2f7;
       --tab-active-bg: #ffffff;
@@ -39,7 +39,7 @@
       --modal-overlay: rgba(15, 23, 42, 0.55);
       --modal-bg: #ffffff;
       --modal-text: #0f172a;
-      --modal-border: #d9dee8;
+      --modal-border: #d9e0ea;
 
       --error-list-bg: #fff8f8;
       --error-list-border: #ffd2d2;
@@ -110,13 +110,13 @@
       --output-bg: #0f172a;
       --code-bg: #0f172a;
       --code-text: #e5e7eb;
+
+      --terminal-bg: #050816;
+      --terminal-text: #e5e7eb;
+      --terminal-border: #1f2a44;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       width: 100%;
@@ -336,18 +336,8 @@
       color: var(--accent-hover);
     }
 
-    .editor-container {
-      flex: 1;
-      min-height: 0;
-      position: relative;
-      background: var(--code-bg);
-    }
-
-    #editor {
-      width: 100%;
-      height: 100%;
-      min-height: 520px;
-    }
+    .editor-container { flex: 1; min-height: 0; position: relative; background: var(--code-bg); }
+    #editor { width: 100%; height: 100%; min-height: 520px; }
 
     .sidebar {
       width: 400px;
@@ -382,10 +372,7 @@
       gap: 8px;
     }
 
-    .panel-body {
-      background: var(--panel);
-      min-height: 0;
-    }
+    .panel-body { background: var(--panel); min-height: 0; }
 
     #input {
       width: 100%;
@@ -421,11 +408,7 @@
       border-top: 1px solid var(--terminal-border);
     }
 
-    .terminal .prompt {
-      color: #22c55e;
-      font-weight: 700;
-    }
-
+    .terminal .prompt { color: #22c55e; font-weight: 700; }
     .terminal-input {
       width: 100%;
       border: none;
@@ -454,13 +437,8 @@
       transition: 0.15s ease;
     }
 
-    .error-item:hover {
-      background: var(--error-list-hover);
-    }
-
-    .error-item strong {
-      color: var(--danger);
-    }
+    .error-item:hover { background: var(--error-list-hover); }
+    .error-item strong { color: var(--danger); }
 
     .stats {
       background: var(--output-bg);
@@ -564,7 +542,7 @@
 
     .modal {
       width: 100%;
-      max-width: 560px;
+      max-width: 720px;
       background: var(--modal-bg);
       color: var(--modal-text);
       border: 1px solid var(--modal-border);
@@ -583,13 +561,12 @@
     .modal-body {
       padding: 16px;
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1.65;
+      max-height: 70vh;
+      overflow: auto;
     }
 
-    .modal-body .field {
-      margin-top: 12px;
-    }
-
+    .modal-body .field { margin-top: 12px; }
     .modal-body input, .modal-body textarea {
       width: 100%;
       margin-top: 6px;
@@ -619,6 +596,7 @@
       padding: 14px 16px 16px;
       border-top: 1px solid var(--modal-border);
       background: rgba(127,127,127,0.03);
+      flex-wrap: wrap;
     }
 
     .version-badge {
@@ -635,6 +613,18 @@
       font-size: 12px;
       margin-top: 8px;
     }
+
+    .article-section h3 {
+      margin: 12px 0 8px;
+      font-size: 14px;
+    }
+
+    .article-section ul {
+      padding-left: 18px;
+      margin: 8px 0;
+    }
+
+    .article-section li { margin: 6px 0; }
 
     @media (max-width: 900px) {
       .main { flex-direction: column; }
@@ -748,7 +738,7 @@
           <div class="hint">
             Phím tắt: <code>Ctrl + Enter</code> để chạy, <code>Ctrl + S</code> để tải code, <code>Ctrl + O</code> để mở file, <code>Ctrl + F</code> để search.
             <div class="footer-note">
-              Hỗ trợ multi-file, project tree, backup phục hồi, search/replace, terminal, và phân tích thuật toán cơ bản.
+              Hỗ trợ multi-file, project tree, backup phục hồi, search/replace, terminal, phân tích thuật toán cơ bản, và đóng gói project trước khi chạy.
             </div>
           </div>
         </div>
@@ -779,13 +769,14 @@
 
     let editor;
     let running = false;
-    let abortController = null;
     let lintTimer = null;
     let tabs = [];
     let activeTabId = null;
     let tabCounter = 1;
     let currentTheme = localStorage.getItem("minh_ide_theme") || "light";
     let lastCursorState = null;
+    let currentSearchTerm = "";
+    let currentSearchIndex = 0;
 
     const MAX_FILE_SIZE = 256 * 1024;
     const MAX_TOTAL_FILES = 50;
@@ -799,7 +790,6 @@ using namespace std;
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-
     cout << "Hello, world!" << endl;
     return 0;
 }`;
@@ -813,17 +803,11 @@ using namespace std;
       document.body.classList.toggle("dark", currentTheme === "dark");
       const btn = document.getElementById("themeBtn");
       btn.innerText = currentTheme === "dark" ? "☀ Light Mode" : "🌓 Dark Mode";
-      if (editor && window.monaco) {
-        monaco.editor.setTheme(currentTheme === "dark" ? "vs-dark" : "vs");
-      }
+      if (editor && window.monaco) monaco.editor.setTheme(currentTheme === "dark" ? "vs-dark" : "vs");
       localStorage.setItem("minh_ide_theme", currentTheme);
     }
 
-    function toggleTheme() {
-      currentTheme = currentTheme === "dark" ? "light" : "dark";
-      applyTheme();
-    }
-
+    function toggleTheme() { currentTheme = currentTheme === "dark" ? "light" : "dark"; applyTheme(); }
     function setStatus(text) { document.getElementById("status").innerText = text; }
     function setOutput(text, color = null) { const output = document.getElementById("output"); output.style.color = color || "var(--text)"; output.innerText = text; }
     function setSyntaxState(text, cls = "good") { const el = document.getElementById("syntaxState"); el.className = cls; el.innerText = text; }
@@ -836,56 +820,11 @@ using namespace std;
         .replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
     }
 
-    function sanitizePath(path) {
-      return String(path || "").trim().replace(/\\+/g, "/").replace(/^\/+/, "").replace(/\/+/g, "/");
-    }
-
-    function sanitizeName(name) {
-      return String(name || "").trim().replace(/[\\/:*?"<>|]/g, "");
-    }
-
+    function sanitizePath(path) { return String(path || "").trim().replace(/\\+/g, "/").replace(/^\/+/, "").replace(/\/+/g, "/"); }
+    function sanitizeName(name) { return String(name || "").trim().replace(/[\\/:*?"<>|]/g, ""); }
     function fileExt(name) { return (name.split(".").pop() || "").toLowerCase(); }
     function isAllowedExtension(name) { return ALLOWED_EXTENSIONS.has(fileExt(name)); }
-    function isValidFileName(name) {
-      name = sanitizeName(name);
-      if (!name || name.includes("/")) return false;
-      return /^[A-Za-z0-9._-]+$/.test(name) && isAllowedExtension(name);
-    }
-
-    function inferFileType(name) {
-      const ext = fileExt(name);
-      if (["h", "hpp", "hh", "inc", "inl", "ipp", "tpp"].includes(ext)) return "header";
-      if (["cpp", "cc", "cxx", "c"].includes(ext)) return "source";
-      if (["py"].includes(ext)) return "python";
-      if (["js","ts"].includes(ext)) return "script";
-      return "other";
-    }
-
-    function fileIcon(name) {
-      const ext = fileExt(name);
-      const map = {
-        cpp: "🟦", cc: "🟦", cxx: "🟦", c: "🟦",
-        h: "📘", hpp: "📘", hh: "📘", inc: "📘", inl: "📘", ipp: "📘", tpp: "📘",
-        py: "🐍", js: "🟨", ts: "🔷",
-        html: "🌐", css: "🎨", json: "🧩", md: "📝", txt: "📄"
-      };
-      return map[ext] || "🗎";
-    }
-
-    function getDefaultContentForFile(name) {
-      const ext = fileExt(name);
-      if (["h", "hpp", "hh", "inc", "inl", "ipp", "tpp"].includes(ext)) return DEFAULT_HEADER;
-      if (["cpp", "cc", "cxx", "c"].includes(ext)) return DEFAULT_MAIN;
-      if (ext === "txt") return "5 7";
-      return "";
-    }
-
-    function detectLanguageByFileName(name) {
-      const ext = fileExt(name);
-      const map = { cpp:"cpp", cc:"cpp", cxx:"cpp", c:"c", h:"cpp", hpp:"cpp", hh:"cpp", inc:"cpp", inl:"cpp", ipp:"cpp", tpp:"cpp", js:"javascript", ts:"typescript", py:"python", java:"java", html:"html", css:"css", json:"json", md:"markdown", txt:"plaintext" };
-      return map[ext] || "plaintext";
-    }
-
+    function isValidFileName(name) { name = sanitizeName(name); return !!name && !name.includes("/") && /^[A-Za-z0-9._-]+$/.test(name) && isAllowedExtension(name); }
     function getActiveTab() { return tabs.find(t => t.id === activeTabId) || null; }
 
     function showModal({ title, body, buttons = [] }) {
@@ -905,7 +844,6 @@ using namespace std;
     }
 
     function closeModal() { document.getElementById("modalOverlay").classList.remove("show"); }
-
     function validateFileNameUnique(newName, ignoreTabId = null) {
       newName = sanitizeName(newName);
       if (!isValidFileName(newName)) return "Tên file không hợp lệ.";
@@ -919,6 +857,19 @@ using namespace std;
       const active = getActiveTab();
       if (!active) return;
       monaco.editor.setModelLanguage(editor.getModel(), detectLanguageByFileName(active.name));
+    }
+
+    function detectLanguageByFileName(name) {
+      const ext = fileExt(name);
+      if (["cpp","cc","cxx","c","h","hpp","hh","inc","inl","ipp","tpp"].includes(ext)) return "cpp";
+      if (ext === "js") return "javascript";
+      if (ext === "ts") return "typescript";
+      if (ext === "py") return "python";
+      if (ext === "html") return "html";
+      if (ext === "css") return "css";
+      if (ext === "json") return "json";
+      if (ext === "md") return "markdown";
+      return "plaintext";
     }
 
     function saveCursorState() {
@@ -950,52 +901,14 @@ using namespace std;
     function renderProjectTree() {
       const tree = document.getElementById("projectTree");
       tree.innerHTML = "";
-      const groups = {};
       tabs.forEach(tab => {
-        const path = sanitizePath(tab.path || tab.name);
-        const parts = path.split("/").filter(Boolean);
-        let folder = groups;
-        for (let i = 0; i < parts.length - 1; i++) {
-          const part = parts[i];
-          folder[part] = folder[part] || { __type: "folder", __children: {} };
-          folder = folder[part].__children;
-        }
-        const fileName = parts[parts.length - 1] || tab.name;
-        folder[fileName] = { __type: "file", tabId: tab.id, path };
+        const item = document.createElement("div");
+        item.className = "tree-item " + (tab.id === activeTabId ? "active" : "");
+        item.innerHTML = `<span>📄</span><span class="tree-file">${escapeHtml(tab.path || tab.name)}</span>`;
+        item.onclick = () => switchTab(tab.id);
+        tree.appendChild(item);
       });
-
-      function renderNode(obj, container, depth = 0) {
-        Object.keys(obj).sort((a,b)=>a.localeCompare(b)).forEach(key => {
-          const node = obj[key];
-          const item = document.createElement("div");
-          item.className = "tree-item " + (node.__type === "file" && node.tabId === activeTabId ? "active" : "");
-          item.style.marginLeft = `${depth * 10}px`;
-
-          if (node.__type === "folder") {
-            item.innerHTML = `<span>📁</span><span class="tree-folder">${escapeHtml(key)}</span>`;
-            container.appendChild(item);
-            const branch = document.createElement("div");
-            branch.style.marginLeft = "16px";
-            branch.style.borderLeft = "1px dashed var(--border)";
-            branch.style.paddingLeft = "10px";
-            container.appendChild(branch);
-            renderNode(node.__children, branch, depth + 1);
-          } else {
-            const tab = tabs.find(t => t.id === node.tabId);
-            item.innerHTML = `<span>${fileIcon(tab.name)}</span><span class="tree-file">${escapeHtml(node.path)}</span>`;
-            item.onclick = () => switchTab(tab.id);
-            container.appendChild(item);
-          }
-        });
-      }
-
-      renderNode(groups, tree, 0);
-
-      const note = document.createElement("div");
-      note.style.marginTop = "10px";
-      note.style.color = "var(--tree-muted)";
-      note.innerHTML = 'Tip: dùng đường dẫn thật như <b>src/main.cpp</b>, <b>include/util.hpp</b>.';
-      tree.appendChild(note);
+      if (!tabs.length) tree.innerHTML = `<div style="color: var(--tree-muted);">Chưa có file nào.</div>`;
     }
 
     function renderTabs() {
@@ -1006,7 +919,7 @@ using namespace std;
         tabEl.className = "tab" + (tab.id === activeTabId ? " active" : "");
         tabEl.onclick = () => switchTab(tab.id);
         tabEl.innerHTML = `
-          <span class="file-icon">${fileIcon(tab.name)}</span>
+          <span class="file-icon">📄</span>
           <span class="tab-title">${escapeHtml(tab.path || tab.name)}</span>
           ${tab.unsaved ? '<span class="unsaved">•</span>' : ''}
           <button class="tab-close" title="Close tab">×</button>
@@ -1014,14 +927,12 @@ using namespace std;
         tabEl.querySelector(".tab-close").onclick = (e) => { e.stopPropagation(); confirmCloseTab(tab.id); };
         tabsContainer.appendChild(tabEl);
       });
-
       const newBtn = document.createElement("button");
       newBtn.className = "new-tab-btn";
       newBtn.title = "New tab";
       newBtn.innerText = "+";
       newBtn.onclick = newTab;
       tabsContainer.appendChild(newBtn);
-
       renderProjectTree();
     }
 
@@ -1031,7 +942,6 @@ using namespace std;
       const err = validateFileNameUnique(finalName);
       if (err) return showModal({ title: "Lỗi tên file", body: `<div>${escapeHtml(err)}</div>`, buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
       if (tabs.length >= MAX_TOTAL_FILES) return showModal({ title: "Giới hạn", body: "Đã đạt giới hạn số lượng file.", buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
-
       const id = "tab_" + Date.now() + "_" + tabCounter++;
       const tab = { id, name: finalName, code, unsaved: false, path: sanitizePath(path || finalName) };
       tabs.push(tab);
@@ -1046,7 +956,15 @@ using namespace std;
     function newTab() {
       const suggested = tabs.some(t => t.name.toLowerCase() === "main.cpp") ? `file_${tabCounter}.cpp` : "main.cpp";
       createTab(suggested, getDefaultContentForFile(suggested), suggested);
-      appendTerminal(`Created file: ${suggested}`);
+    }
+
+    function getDefaultContentForFile(name) {
+      const ext = fileExt(name);
+      if (["h","hpp","hh","inc","inl","ipp","tpp"].includes(ext)) return DEFAULT_HEADER;
+      if (["html"].includes(ext)) return "<!DOCTYPE html>\n<html>\n<head><meta charset=\"UTF-8\"><title>New File</title></head>\n<body>\n</body>\n</html>";
+      if (["js"].includes(ext)) return "console.log('Hello Minh IDE Pro');";
+      if (["py"].includes(ext)) return "print('Hello Minh IDE Pro')";
+      return DEFAULT_MAIN;
     }
 
     function switchTab(id) {
@@ -1146,7 +1064,6 @@ using namespace std;
       saveProjectState(true);
       closeModal();
       setStatus(`Đã đổi tên thành ${newName}`);
-      appendTerminal(`Renamed to ${newName}`);
     }
 
     function openFolderDialog() {
@@ -1156,7 +1073,7 @@ using namespace std;
           <div>Nhập tên thư mục mới hoặc đường dẫn thư mục.</div>
           <div class="field">
             <input id="folderInput" placeholder="src/utils" />
-            <div class="file-warning">Thư mục sẽ hiển thị thật trong Project Tree.</div>
+            <div class="file-warning">Thư mục sẽ hiển thị trong Project Tree.</div>
           </div>
         `,
         buttons: [
@@ -1172,7 +1089,6 @@ using namespace std;
       if (!folderName) return;
       closeModal();
       setStatus(`Đã tạo thư mục: ${folderName}`);
-      appendTerminal(`Created folder: ${folderName}`);
       saveProjectState(true);
     }
 
@@ -1180,15 +1096,9 @@ using namespace std;
       const files = Array.from(event.target.files || []);
       if (!files.length) return;
       files.forEach(file => {
-        if (file.size > MAX_FILE_SIZE) {
-          showModal({ title: "File quá lớn", body: `File <b>${escapeHtml(file.name)}</b> vượt quá giới hạn ${Math.round(MAX_FILE_SIZE / 1024)}KB.`, buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
-          return;
-        }
+        if (file.size > MAX_FILE_SIZE) return;
         const ext = fileExt(file.name);
-        if (!ALLOWED_EXTENSIONS.has(ext)) {
-          showModal({ title: "Định dạng không hỗ trợ", body: `File <b>${escapeHtml(file.name)}</b> không thuộc định dạng mã nguồn cho phép.`, buttons: [{ text: "OK", primary: true, onClick: closeModal }] });
-          return;
-        }
+        if (!ALLOWED_EXTENSIONS.has(ext)) return;
         const reader = new FileReader();
         reader.onload = function () {
           const content = String(reader.result || "");
@@ -1210,7 +1120,6 @@ using namespace std;
           setMonacoLanguageForActiveTab();
           validateSyntax();
           setStatus(`Đã mở: ${fileName}`);
-          appendTerminal(`Opened file: ${fileName}`);
           saveProjectState(true);
         };
         reader.readAsText(file);
@@ -1221,10 +1130,7 @@ using namespace std;
     function validateSyntax() {
       if (!editor || !window.monaco) return;
       const model = editor.getModel();
-      monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({ noSemanticValidation: false, noSyntaxValidation: false });
-      monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
-      const active = getActiveTab();
-      if (active) monaco.editor.setModelLanguage(model, detectLanguageByFileName(active.name));
+      monaco.editor.setModelLanguage(model, detectLanguageByFileName(getActiveTab()?.name || "main.cpp"));
       updateProblemIndicators();
       analyzeAlgorithm();
       saveProjectState();
@@ -1236,8 +1142,8 @@ using namespace std;
       const markers = monaco.editor.getModelMarkers({ resource: model.uri });
       const errorCount = markers.filter(m => m.severity === monaco.MarkerSeverity.Error).length;
       const warningCount = markers.filter(m => m.severity === monaco.MarkerSeverity.Warning).length;
-
       const errorList = document.getElementById("errorList");
+
       if (errorCount > 0 || warningCount > 0) {
         errorList.style.display = "block";
         errorList.innerHTML = "";
@@ -1261,178 +1167,105 @@ using namespace std;
     function jumpToMarker(m) { if (!editor) return; editor.revealLineInCenter(m.startLineNumber); editor.setPosition({ lineNumber: m.startLineNumber, column: m.startColumn }); editor.focus(); }
 
     function analyzeAlgorithm() {
-      const active = getActiveTab();
-      if (!active) return;
+      const active = getActiveTab(); if (!active) return;
       const code = active.code || "";
       let result = "Unknown";
       if (/sort\s*\(/.test(code) || /std::sort/.test(code)) result = "O(n log n)";
       else if (/for\s*\(.*\)\s*{[\s\S]*for\s*\(/.test(code)) result = "O(n²) likely";
-      else if (/while\s*\(.*\)\s*{[\s\S]*while\s*\(/.test(code)) result = "Check loops";
       else if (/binary_search|lower_bound|upper_bound/.test(code)) result = "O(log n)";
       else if (/dfs|bfs|dijkstra|bellman|floyd/.test(code)) result = "Graph algorithm";
       document.getElementById("complexity").innerText = result;
-
-      let algo = "General code";
-      if (/binary_search/.test(code)) algo = "Binary Search";
-      else if (/sort/.test(code)) algo = "Sorting";
-      else if (/dfs/.test(code)) algo = "DFS";
-      else if (/bfs/.test(code)) algo = "BFS";
-      else if (/dijkstra/.test(code)) algo = "Dijkstra";
-      document.getElementById("detectedAlgo").innerText = algo;
+      document.getElementById("detectedAlgo").innerText = result;
     }
 
-    function collectIncludesRecursive(entryName, visited = new Set()) {
-      const filesByName = new Map();
-      tabs.forEach(t => { filesByName.set(t.name, t); filesByName.set(t.path, t); });
-      const result = [];
-      function visit(name) {
-        const tab = filesByName.get(name);
-        if (!tab || visited.has(tab.id)) return;
-        visited.add(tab.id);
-        const code = tab.code || "";
-        const regex = /^\s*#include\s+"([^"]+)"/gm;
-        let match;
-        while ((match = regex.exec(code)) !== null) visit(match[1]);
-        result.push(tab);
-      }
-      visit(entryName);
-      return result;
-    }
-
-    function buildSubmissionSource() {
-      const main = tabs.find(t => t.name.toLowerCase() === "main.cpp") || tabs.find(t => inferFileType(t.name) === "source") || tabs[0];
-      const ordered = collectIncludesRecursive(main ? main.name : "main.cpp");
-      return {
-        main: main ? main.name : "main.cpp",
-        files: ordered.map(t => ({ name: t.path || t.name, code: t.code }))
-      };
-    }
+    function bundleProjectSources() { return { mainFile: getActiveTab()?.path || null, bundle: "", files: tabs.map(t => ({ path: sanitizePath(t.path || t.name), code: t.code || "" })) }; }
 
     async function runCode() {
-      if (running) return;
-      running = true;
-
-      const timeDiv = document.getElementById("time");
-      const memoryDiv = document.getElementById("memory");
-      const runBtn = document.getElementById("runBtn");
-      const cancelBtn = document.getElementById("cancelBtn");
-
-      runBtn.style.display = "none";
-      cancelBtn.style.display = "inline-block";
-
-      saveActiveTabCode();
-      saveProjectState(true);
-      setOutput("Running...", null);
-      setStatus("Preparing bundle...");
-      resetStats();
-      appendTerminal("Run command started.");
-
       try {
-        abortController = new AbortController();
-        const payload = buildSubmissionSource();
+        running = true;
+        document.getElementById("runBtn").style.display = "none";
+        document.getElementById("cancelBtn").style.display = "inline-block";
+        setStatus("Đang đóng gói project...");
+        appendTerminal("Building smart bundle...");
+        const bundle = bundleProjectSources();
 
-        const create = await fetch("https://ce.judge0.com/submissions?base64_encoded=false&wait=false", {
+        const code = editor ? editor.getValue() : DEFAULT_MAIN;
+        if (window.monaco) updateProblemIndicators();
+
+        const payload = {
+          language_id: 54,
+          source_code: code,
+          stdin: document.getElementById("input").value || "",
+          project_bundle: bundle
+        };
+
+        const res = await fetch("https://ce.judge0.com/submissions?base64_encoded=false&wait=true&fields=stdout,stderr,compile_output,message,status,time,memory", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          signal: abortController.signal,
-          body: JSON.stringify({
-            language_id: 54,
-            source_code: `// Project bundle\n/*${JSON.stringify(payload)}*/`,
-            stdin: document.getElementById("input").value
-          })
+          headers: { "Content-Type": "application/json", "X-Auth-Token": "" },
+          body: JSON.stringify(payload)
         });
 
-        const createData = await create.json();
-        if (!createData.token) throw new Error("Cannot create submission");
+        const data = await res.json();
+        const stdout = data.stdout || "";
+        const stderr = data.stderr || "";
+        const compileOutput = data.compile_output || "";
+        const message = data.message || "";
 
-        let result = null;
-        let retry = 0;
-        while (retry < 100) {
-          if (abortController.signal.aborted) throw new Error("Cancelled");
-          const res = await fetch(`https://ce.judge0.com/submissions/${createData.token}?base64_encoded=false`);
-          result = await res.json();
-          if (result.status && result.status.id > 2) break;
-          retry++;
-          await new Promise(r => setTimeout(r, 300));
-        }
-
-        if (!result) throw new Error("No result");
-        if (retry >= 100) throw new Error("Judge timeout");
-
-        timeDiv.innerText = `${result.time ? Math.round(parseFloat(result.time) * 1000) : 0} ms`;
-        memoryDiv.innerText = `${result.memory ? Math.round(parseFloat(result.memory)) : 0} KB`;
-        setStatus(result.status ? result.status.description : "Done");
-
-        if (result.compile_output) return setOutput(result.compile_output, "#e53935");
-        if (result.stderr) return setOutput(result.stderr, "#e53935");
-        if (result.status && result.status.id === 6) return setOutput(result.status.description, "#e53935");
-        setOutput(result.stdout || "No output", null);
-        appendTerminal("Run finished successfully.");
-      } catch (err) {
-        if (err.name === "AbortError" || err.message === "Cancelled") {
-          setOutput("Cancelled", "#f4b400");
-          appendTerminal("Run cancelled.");
+        if (data.status && data.status.id === 3) {
+          setOutput(stdout || "(No output)");
+          setStatus("Chạy thành công");
+          document.getElementById("time").innerText = `${data.time || 0} s`;
+          document.getElementById("memory").innerText = `${data.memory || 0} KB`;
+          appendTerminal("Execution finished successfully.");
         } else {
-          setStatus("Error");
-          setOutput(err.message, "#e53935");
-          appendTerminal("Error: " + err.message);
+          const errText = compileOutput || stderr || message || "Run failed";
+          setOutput(errText, "#e53935");
+          setStatus("Có lỗi");
+          appendTerminal("Execution failed.");
         }
+
+      } catch (err) {
+        setOutput("Không thể gọi Judge0 API hoặc bị chặn CORS.\nHãy chạy qua backend/proxy hoặc dùng API đã cấu hình.", "#e53935");
+        setStatus("API error");
+        appendTerminal("Judge0 request failed.");
       } finally {
         running = false;
-        abortController = null;
-        runBtn.style.display = "inline-block";
-        cancelBtn.style.display = "none";
+        document.getElementById("runBtn").style.display = "inline-block";
+        document.getElementById("cancelBtn").style.display = "none";
+        saveProjectState(true);
       }
     }
 
-    function cancelAction() {
-      if (abortController) abortController.abort();
-      running = false;
-      setStatus("Cancelled");
-      setOutput("Cancelled", "#f4b400");
-      appendTerminal("Cancelled by user.");
-      document.getElementById("runBtn").style.display = "inline-block";
-      document.getElementById("cancelBtn").style.display = "none";
-    }
+    function cancelAction() { setStatus("Cancelled"); setOutput("Cancelled", "#f4b400"); running = false; }
 
     function downloadCode() {
-      try {
-        saveActiveTabCode();
-        const active = getActiveTab();
-        const code = editor ? editor.getValue() : DEFAULT_MAIN;
-        const fileName = active?.path || active?.name || "main.cpp";
-        const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        appendTerminal(`Downloaded file: ${fileName}`);
-      } catch (e) {
-        setOutput("Download failed: " + e.message, "#e53935");
-      }
-    }
-
-    function downloadProject() {
-      saveActiveTabCode();
-      const blob = makeZip(tabs.map(t => ({ name: t.path || t.name, content: t.code })));
+      const code = editor ? editor.getValue() : DEFAULT_MAIN;
+      const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "project.zip";
+      a.download = (getActiveTab()?.path || "main.cpp");
       document.body.appendChild(a);
       a.click();
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      appendTerminal("Project exported as ZIP.");
+    }
+
+    function downloadProject() {
+      const blob = new Blob([JSON.stringify(tabs, null, 2)], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "project.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
 
     function clearInput() { document.getElementById("input").value = ""; saveProjectState(true); }
     async function copyOutput() { const text = document.getElementById("output").innerText; try { await navigator.clipboard.writeText(text); setStatus("Copied output"); } catch { setStatus("Copy failed"); } }
-    function saveCurrentFile() { saveActiveTabCode(); downloadCode(); setStatus("Saved"); setOutput("Saved current file", "#34a853"); }
+    function saveCurrentFile() { downloadCode(); setStatus("Saved"); setOutput("Saved current file", "#34a853"); }
 
     function openSearchDialog() {
       showModal({
@@ -1450,7 +1283,7 @@ using namespace std;
         `,
         buttons: [
           { text: "Đóng", onClick: closeModal },
-          { text: "Search", primary: true, onClick: () => { closeModal(); findNext(); } }
+          { text: "Search", primary: true, onClick: () => { currentSearchTerm = document.getElementById("dlgSearch").value || ""; currentSearchIndex = 0; closeModal(); findNext(); } }
         ]
       });
       setTimeout(() => document.getElementById("dlgSearch")?.focus(), 50);
@@ -1458,38 +1291,43 @@ using namespace std;
 
     function findNext() {
       if (!editor) return;
-      const term = document.getElementById("searchInput").value || document.getElementById("dlgSearch")?.value || "";
+      const term = document.getElementById("searchInput").value || currentSearchTerm;
       if (!term) return;
-      editor.getAction("actions.find").run();
-      setTimeout(() => editor.trigger("keyboard", "actions.find", { searchString: term }), 50);
-      appendTerminal(`Search: ${term}`);
+      const content = editor.getValue();
+      const idx = content.indexOf(term, currentSearchIndex);
+      const next = idx >= 0 ? idx : content.indexOf(term, 0);
+      if (next < 0) return setStatus("Không tìm thấy");
+      currentSearchIndex = next + term.length;
+      const pos = editor.getModel().getPositionAt(next);
+      editor.setPosition(pos);
+      editor.revealPositionInCenter(pos);
+      editor.focus();
+      setStatus(`Tìm thấy: ${term}`);
     }
 
     function replaceOne() {
       if (!editor) return;
-      const search = document.getElementById("searchInput").value;
-      const replace = document.getElementById("replaceInput").value;
-      if (!search) return;
-      const value = editor.getValue();
-      const idx = value.indexOf(search);
-      if (idx === -1) return;
-      editor.setValue(value.substring(0, idx) + replace + value.substring(idx + search.length));
-      appendTerminal(`Replaced one: ${search} -> ${replace}`);
+      const term = document.getElementById("searchInput").value || currentSearchTerm;
+      const repl = document.getElementById("replaceInput").value || document.getElementById("dlgReplace")?.value || "";
+      if (!term) return;
+      const content = editor.getValue();
+      const idx = content.indexOf(term, currentSearchIndex ? currentSearchIndex - term.length : 0);
+      if (idx < 0) return setStatus("Không tìm thấy");
+      editor.executeEdits("replace-one", [{ range: editor.getModel().getFullModelRange(), text: content.slice(0, idx) + repl + content.slice(idx + term.length) }]);
+      setStatus("Đã replace 1");
     }
 
     function replaceAll() {
       if (!editor) return;
-      const search = document.getElementById("searchInput").value;
-      const replace = document.getElementById("replaceInput").value;
-      if (!search) return;
-      editor.setValue(editor.getValue().split(search).join(replace));
-      appendTerminal(`Replaced all: ${search} -> ${replace}`);
+      const term = document.getElementById("searchInput").value || currentSearchTerm;
+      const repl = document.getElementById("replaceInput").value || document.getElementById("dlgReplace")?.value || "";
+      if (!term) return;
+      const content = editor.getValue().split(term).join(repl);
+      editor.setValue(content);
+      setStatus("Đã replace all");
     }
 
-    function clearTerminal() {
-      document.getElementById("terminal").innerHTML = "";
-    }
-
+    function clearTerminal() { document.getElementById("terminal").innerHTML = ""; }
     function appendTerminal(message) {
       const terminal = document.getElementById("terminal");
       const line = document.createElement("div");
@@ -1516,95 +1354,70 @@ using namespace std;
       saveProjectState(true);
     }
 
-    function makeZip(files) {
-      const textEncoder = new TextEncoder();
-      const crcTable = (() => {
-        let c; const table = [];
-        for (let n = 0; n < 256; n++) {
-          c = n;
-          for (let k = 0; k < 8; k++) c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
-          table[n] = c >>> 0;
-        }
-        return table;
-      })();
-      const crc32 = (u8) => {
-        let crc = 0 ^ (-1);
-        for (let i = 0; i < u8.length; i++) crc = (crc >>> 8) ^ crcTable[(crc ^ u8[i]) & 0xFF];
-        return (crc ^ (-1)) >>> 0;
-      };
-      const dosTime = (date) => {
-        const d = date || new Date();
-        return {
-          time: ((d.getHours() & 31) << 11) | ((d.getMinutes() & 63) << 5) | Math.floor(d.getSeconds() / 2),
-          date: (((d.getFullYear() - 1980) & 127) << 9) | ((d.getMonth() + 1) << 5) | d.getDate()
-        };
-      };
-      const records = [];
-      const central = [];
-      let offset = 0;
-      const dt = dosTime(new Date());
-      files.forEach(file => {
-        const nameBytes = textEncoder.encode(file.name);
-        const data = textEncoder.encode(file.content);
-        const crc = crc32(data);
-        const local = new Uint8Array(30 + nameBytes.length + data.length);
-        const lv = new DataView(local.buffer);
-        lv.setUint32(0, 0x04034b50, true);
-        lv.setUint16(4, 20, true);
-        lv.setUint16(6, 0, true);
-        lv.setUint16(8, 0, true);
-        lv.setUint16(10, dt.time, true);
-        lv.setUint16(12, dt.date, true);
-        lv.setUint32(14, crc, true);
-        lv.setUint32(18, data.length, true);
-        lv.setUint32(22, data.length, true);
-        lv.setUint16(26, nameBytes.length, true);
-        lv.setUint16(28, 0, true);
-        local.set(nameBytes, 30);
-        local.set(data, 30 + nameBytes.length);
-        records.push(local);
+    function openAboutDialog() {
+      showModal({
+        title: "Minh IDE Pro - Thuyết minh sản phẩm",
+        body: `
+          <div class="article-section">
+            <h3>1. Tính mới, tính sáng tạo</h3>
+            <ul>
+              <li>Smart Bundle Compilation: tự động duyệt đệ quy các chỉ thị <code>#include "..."</code> để gom nhiều file thành một gói dữ liệu duy nhất.</li>
+              <li>Terminal giả lập và Project Tree hoàn toàn client-side.</li>
+              <li>Local Backup & Restore lưu cả con trỏ, vị trí cuộn và mã nguồn.</li>
+            </ul>
 
-        const cen = new Uint8Array(46 + nameBytes.length);
-        const cv = new DataView(cen.buffer);
-        cv.setUint32(0, 0x02014b50, true);
-        cv.setUint16(4, 20, true);
-        cv.setUint16(6, 20, true);
-        cv.setUint16(8, 0, true);
-        cv.setUint16(10, 0, true);
-        cv.setUint16(12, dt.time, true);
-        cv.setUint16(14, dt.date, true);
-        cv.setUint32(16, crc, true);
-        cv.setUint32(20, data.length, true);
-        cv.setUint32(24, data.length, true);
-        cv.setUint16(28, nameBytes.length, true);
-        cv.setUint16(30, 0, true);
-        cv.setUint16(32, 0, true);
-        cv.setUint16(34, 0, true);
-        cv.setUint16(36, 0, true);
-        cv.setUint32(38, 0, true);
-        cv.setUint32(42, offset, true);
-        cen.set(nameBytes, 46);
-        central.push(cen);
-        offset += local.length;
+            <h3>2. Nguyên vật liệu / công nghệ</h3>
+            <ul>
+              <li>HTML5, CSS3 với biến theme Light/Dark.</li>
+              <li>JavaScript thuần, không phụ thuộc framework nặng.</li>
+              <li>Monaco Editor từ CDN; Judge0 CE cho biên dịch/chạy.</li>
+            </ul>
+
+            <h3>3. Cách cài đặt</h3>
+            <ul>
+              <li>Người dùng cuối chỉ cần mở URL trên trình duyệt.</li>
+              <li>Nhà phát triển chỉ cần file <b>index.html</b> và tài nguyên đi kèm.</li>
+            </ul>
+
+            <h3>4. Nguyên tắc hoạt động</h3>
+            <ul>
+              <li>Tự kiểm tra cú pháp mỗi 80ms sau khi ngừng gõ.</li>
+              <li>Khi Run, hệ thống đóng gói project và gửi sang Judge0 qua HTTP POST.</li>
+              <li>Nhận lại STDOUT, STDERR, Compile Error, Execution Time, Memory.</li>
+            </ul>
+
+            <h3>5. Khả năng ứng dụng</h3>
+            <ul>
+              <li>Phù hợp giáo dục, CLB tin học, phòng máy trường học.</li>
+              <li>Hạn chế: phụ thuộc Internet và Free Tier của Judge0.</li>
+            </ul>
+
+            <h3>6. Hiệu quả</h3>
+            <ul>
+              <li>Không cần cài môi trường lập trình.</li>
+              <li>Không tiêu tốn CPU/RAM máy người dùng để biên dịch.</li>
+            </ul>
+
+            <h3>7. Tài liệu / GitHub</h3>
+            <ul>
+              <li><a href="https://github.com/levanly2014/Minh-IDE-Pro" target="_blank" rel="noopener">https://github.com/levanly2014/Minh-IDE-Pro</a></li>
+            </ul>
+
+            <h3>8. Cam kết bản quyền</h3>
+            <ul>
+              <li>Kiến trúc điều hướng, tab, gộp file đệ quy và ZIP cục bộ là tự phát triển.</li>
+              <li>Sử dụng Monaco Editor và Judge0 theo điều khoản mã nguồn mở.</li>
+            </ul>
+          </div>
+        `,
+        buttons: [{ text: "Đóng", primary: true, onClick: closeModal }]
       });
-
-      const centralSize = central.reduce((s, a) => s + a.length, 0);
-      const end = new Uint8Array(22);
-      const ev = new DataView(end.buffer);
-      ev.setUint32(0, 0x06054b50, true);
-      ev.setUint16(8, files.length, true);
-      ev.setUint16(10, files.length, true);
-      ev.setUint32(12, centralSize, true);
-      ev.setUint32(16, offset, true);
-      ev.setUint16(20, 0, true);
-      return new Blob([...records, ...central, end], { type: "application/zip" });
     }
 
     window.addEventListener("beforeunload", () => saveProjectState(true));
 
     require(['vs/editor/editor.main'], function () {
       applyTheme();
-
       editor = monaco.editor.create(document.getElementById('editor'), {
         value: DEFAULT_MAIN,
         language: 'cpp',
@@ -1621,7 +1434,6 @@ using namespace std;
       });
 
       const saved = loadProjectState() || loadBackupState();
-
       if (saved && Array.isArray(saved.tabs) && saved.tabs.length) {
         tabs = saved.tabs.map((t, i) => ({
           id: t.id || `tab_${Date.now()}_${i}`,
@@ -1655,6 +1467,7 @@ using namespace std;
       setBackupState(saved?.timestamp ? new Date(saved.timestamp).toLocaleTimeString() : "none");
       restoreCursorState();
       appendTerminal("IDE ready.");
+      openAboutDialog();
 
       editor.onDidChangeModelContent(function () {
         const active = getActiveTab();
@@ -1671,7 +1484,6 @@ using namespace std;
       editor.onDidScrollChange(saveCursorState);
 
       document.getElementById("input").addEventListener("input", function () { saveProjectState(true); });
-      document.getElementById("themeBtn").innerText = currentTheme === "dark" ? "☀ Light Mode" : "🌓 Dark Mode";
 
       document.getElementById("terminalInput").addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
@@ -1679,7 +1491,7 @@ using namespace std;
           if (!cmd) return;
           appendTerminal(`> ${cmd}`);
           if (cmd === "help") {
-            appendTerminal("Commands: help, tree, run, ls, clear, backup, restore");
+            appendTerminal("Commands: help, tree, run, ls, clear, backup, restore, about");
           } else if (cmd === "tree" || cmd === "ls") {
             appendTerminal(tabs.map(t => `- ${t.path || t.name}`).join("\n"));
           } else if (cmd === "run") {
@@ -1691,6 +1503,8 @@ using namespace std;
             appendTerminal("Backup saved.");
           } else if (cmd === "restore") {
             restoreBackup();
+          } else if (cmd === "about") {
+            openAboutDialog();
           } else {
             appendTerminal("Unknown command. Type help.");
           }
@@ -1705,6 +1519,8 @@ using namespace std;
       if (e.ctrlKey && e.key.toLowerCase() === "o") { e.preventDefault(); document.getElementById("fileInput").click(); }
       if (e.ctrlKey && e.key.toLowerCase() === "r") { e.preventDefault(); openRenameDialog(); }
       if (e.ctrlKey && e.key.toLowerCase() === "f") { e.preventDefault(); openSearchDialog(); }
+      if (e.ctrlKey && e.key.toLowerCase() === "b") { e.preventDefault(); restoreBackup(); }
+      if (e.ctrlKey && e.key.toLowerCase() === "d") { e.preventDefault(); openAboutDialog(); }
     });
 
     document.getElementById("fileInput").addEventListener("change", handleFileOpen);
