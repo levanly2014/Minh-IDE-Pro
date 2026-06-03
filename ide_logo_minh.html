@@ -62,6 +62,12 @@
       --terminal-text: #e5e7eb;
       --terminal-border: #1f2a44;
       --terminal-muted: #94a3b8;
+
+      --math-bg: #ffffff;
+      --math-border: #d9e0ea;
+      --math-ok: #2fa84f;
+      --math-warn: #f4b400;
+      --math-bad: #e53935;
     }
 
     body.dark {
@@ -114,6 +120,12 @@
       --terminal-bg: #050816;
       --terminal-text: #e5e7eb;
       --terminal-border: #1f2a44;
+
+      --math-bg: #0f172a;
+      --math-border: #2a3550;
+      --math-ok: #4ade80;
+      --math-warn: #fbbf24;
+      --math-bad: #f87171;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -442,7 +454,7 @@
       border-top: 1px solid var(--terminal-border);
     }
 
-    .error-list {
+    .error-list, .math-list {
       background: var(--error-list-bg);
       border-top: 1px solid var(--error-list-border);
       max-height: 200px;
@@ -451,7 +463,7 @@
       font-size: 12px;
     }
 
-    .error-item {
+    .error-item, .math-item {
       padding: 8px 12px;
       border-bottom: 1px solid rgba(127, 127, 127, 0.12);
       cursor: pointer;
@@ -459,8 +471,8 @@
       transition: 0.15s ease;
     }
 
-    .error-item:hover { background: var(--error-list-hover); }
-    .error-item strong { color: var(--danger); }
+    .error-item:hover, .math-item:hover { background: var(--error-list-hover); }
+    .error-item strong, .math-item strong { color: var(--danger); }
 
     .stats {
       background: var(--output-bg);
@@ -732,7 +744,7 @@
       background:var(--bg);
     }
 
-    .ast-panel {
+    .ast-panel, .math-panel {
       border-top: 1px solid var(--border);
       background: var(--panel);
       max-height: 280px;
@@ -741,15 +753,24 @@
       font-family: "Roboto Mono", monospace;
       font-size: 12px;
     }
-    .ast-node {
+
+    .ast-node, .math-node {
       margin: 4px 0;
       padding: 4px 8px;
       border-left: 2px solid var(--accent);
       background: rgba(66, 133, 244, 0.06);
       border-radius: 4px;
     }
-    .ast-node .kind { font-weight: 700; color: var(--accent); }
-    .ast-children { margin-left: 14px; border-left: 1px dashed var(--border); padding-left: 10px; }
+
+    .math-node {
+      border-left-color: var(--warning);
+      background: color-mix(in srgb, var(--warning) 10%, transparent);
+    }
+
+    .ast-node .kind, .math-node .kind { font-weight: 700; color: var(--accent); }
+    .math-node .kind { color: var(--warning); }
+
+    .ast-children, .math-children { margin-left: 14px; border-left: 1px dashed var(--border); padding-left: 10px; }
 
     .auth-shell {
       display: grid;
@@ -813,38 +834,6 @@
     .facebook { background: #1877f2; }
     .github { background: #24292e; }
 
-    .math-panel {
-      border-top: 1px solid var(--border);
-      background: var(--panel);
-      max-height: 320px;
-      overflow: auto;
-      padding: 10px 12px;
-      font-family: "Roboto Mono", monospace;
-      font-size: 12px;
-    }
-    .math-node {
-      margin: 5px 0;
-      padding: 6px 8px;
-      border-left: 2px solid #8b5cf6;
-      background: rgba(139, 92, 246, 0.08);
-      border-radius: 6px;
-    }
-    .math-node .kind {
-      font-weight: 800;
-      color: #8b5cf6;
-    }
-    .math-node.pro {
-      border-left-color: #f59e0b;
-      background: linear-gradient(90deg, rgba(245, 158, 11, 0.12), rgba(139, 92, 246, 0.06));
-    }
-    .math-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 700;
-      color: var(--warning);
-    }
-
     @media (max-width: 1200px) { .doc-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     @media (max-width: 900px) {
       .main { flex-direction: column; }
@@ -882,7 +871,7 @@
         <button class="btn-outline" onclick="restoreBackup()">♻ Restore Backup</button>
         <button class="btn-outline" id="authBtn" onclick="openLoginDialog()">👤 Login / Register</button>
         <button class="btn-outline" onclick="openReferenceDocuments()">📚 My refrence document</button>
-        <button class="btn-outline" onclick="openMathInspector()">🧮 Math Inspector PRO</button>
+        <button class="btn-outline" onclick="openMathInspector()">🧠 Math Inspector</button>
         <button class="btn" id="runBtn" onclick="runCode()">▶ Run</button>
         <button class="btn danger" id="cancelBtn" onclick="cancelAction()" style="display:none;">✖ Cancel</button>
         <button class="btn secondary" onclick="downloadProject()">⬇ Download Project</button>
@@ -928,6 +917,7 @@
           </div>
           <div id="output">Output...</div>
           <div id="errorList" class="error-list" style="display:none;"></div>
+          <div id="mathList" class="math-list" style="display:none;"></div>
         </div>
 
         <div class="panel" style="flex: 0 0 auto;">
@@ -963,12 +953,12 @@
 
         <div class="panel" style="flex: 0 0 auto;">
           <div class="panel-title">
-            <span>MATH INSPECTOR PRO</span>
+            <span>MATH INSPECTOR</span>
             <div class="small-actions">
-              <button class="btn-outline" style="padding: 5px 10px;" onclick="refreshMathInspector()">Refresh</button>
+              <button class="btn-outline" style="padding: 5px 10px;" onclick="validateMath()">Refresh Math</button>
             </div>
           </div>
-          <div class="math-panel" id="mathView">Math inspector will appear here.</div>
+          <div class="math-panel" id="mathView">Math Inspector will appear here.</div>
         </div>
 
         <div class="panel" style="flex: 0 0 auto;">
@@ -979,13 +969,13 @@
             <div>Memory: <span id="memory" class="good">0 KB</span></div>
             <div>Complexity: <span id="complexity" class="warn">Unknown</span></div>
             <div>Detected: <span id="detectedAlgo" class="good">—</span></div>
+            <div>Math Check: <span id="mathState" class="good">OK</span></div>
             <div class="version-badge">Backup: <span id="backupState">none</span></div>
           </div>
           <div class="hint">
             Phím tắt: <code>Ctrl + Enter</code> để chạy, <code>Ctrl + S</code> để tải code, <code>Ctrl + O</code> để mở file, <code>Ctrl + F</code> để search.
             <div class="footer-note">
-              Hỗ trợ multi-file, project tree, backup phục hồi, search/replace, terminal, phân tích thuật toán cơ bản, và đóng gói project trước khi chạy.
-              <br />Giờ có thêm <b>Math Inspector PRO</b> kiểu “soi lỗi toán học” như AST, nhưng soi biểu thức như quân sư Zhuge Liang.
+              Hỗ trợ multi-file, project tree, backup phục hồi, search/replace, terminal, phân tích thuật toán cơ bản, AST, và Math Inspector để soi lỗi biểu thức/toán học.
             </div>
           </div>
         </div>
@@ -1062,6 +1052,7 @@ using namespace std;
     function setStatus(text) { document.getElementById("status").innerText = text; }
     function setOutput(text, color = null) { const output = document.getElementById("output"); output.style.color = color || "var(--text)"; output.innerText = text; }
     function setSyntaxState(text, cls = "good") { const el = document.getElementById("syntaxState"); el.className = cls; el.innerText = text; }
+    function setMathState(text, cls = "good") { const el = document.getElementById("mathState"); el.className = cls; el.innerText = text; }
     function resetStats() { document.getElementById("time").innerText = "0 ms"; document.getElementById("memory").innerText = "0 KB"; }
     function setBackupState(text) { document.getElementById("backupState").innerText = text; }
     function showModal({ title, body, buttons = [] }) {
@@ -1178,7 +1169,7 @@ using namespace std;
     function getDefaultContentForFile(name) {
       const ext = fileExt(name);
       if (["h","hpp","hh","inc","inl","ipp","tpp"].includes(ext)) return DEFAULT_HEADER;
-      if (ext === "html") return "<!DOCTYPE html>\\n<html>\\n<head><meta charset=\"UTF-8\"><title>New File</title></head>\\n<body>\\n</body>\\n</html>";
+      if (ext === "html") return "<!DOCTYPE html>\n<html>\n<head><meta charset=\"UTF-8\"><title>New File</title></head>\n<body>\n</body>\n</html>";
       if (ext === "js") return "console.log('Hello Minh IDE Pro');";
       if (ext === "py") return "print('Hello Minh IDE Pro')";
       return DEFAULT_MAIN;
@@ -1402,8 +1393,12 @@ using namespace std;
     }
 
     function buildJsAstTree(code) {
-      try { return acorn.parse(code, { ecmaVersion: "latest", sourceType: "module" }); }
-      catch (e) { return { type: "ParseError", message: e.message, loc: e.loc || null }; }
+      try {
+        const ast = acorn.parse(code, { ecmaVersion: "latest", sourceType: "module" });
+        return ast;
+      } catch (e) {
+        return { type: "ParseError", message: e.message, loc: e.loc || null };
+      }
     }
 
     function tokenizeCpp(code) {
@@ -1431,6 +1426,7 @@ using namespace std;
         while (i < tokens.length) body.push(parseTopLevel());
         return { type: "Program", body };
       }
+
       function parseTopLevel() {
         if (match("#include")) return parseInclude();
         if (match("#pragma")) return parsePragma();
@@ -1438,20 +1434,39 @@ using namespace std;
         if (/^[A-Za-z_]\w*$/.test(peek() || "") && tokens[i + 1] === "::") return parseNamespaceStmt();
         return parseStatement();
       }
-      function parseInclude() { next(); return { type: "IncludeDirective", value: next() || "" }; }
+
+      function parseInclude() { next(); const value = next() || ""; return { type: "IncludeDirective", value }; }
       function parsePragma() { next(); const value = []; while (i < tokens.length && peek() !== "\n") value.push(next()); return { type: "PragmaDirective", value: value.join(" ") }; }
       function parseNamespaceStmt() { const name = next(); next(); const member = next(); return { type: "NamespaceAccess", object: name, member }; }
       function parseFunction() { next(); next(); consume("("); consume(")"); const body = parseBlock(); return { type: "FunctionDeclaration", returnType: "int", name: "main", body }; }
-      function parseBlock() { const stmts = []; consume("{"); while (i < tokens.length && !match("}")) stmts.push(parseStatement()); consume("}"); return { type: "BlockStatement", body: stmts }; }
+
+      function parseBlock() {
+        const stmts = [];
+        consume("{");
+        while (i < tokens.length && !match("}")) stmts.push(parseStatement());
+        consume("}");
+        return { type: "BlockStatement", body: stmts };
+      }
+
       function parseStatement() {
         if (match("{")) return parseBlock();
-        if (peek() === "return") { next(); const expr = []; while (i < tokens.length && !match(";")) expr.push(next()); consume(";"); return { type: "ReturnStatement", value: expr.join(" ") }; }
-        const parts = []; while (i < tokens.length && !match(";") && !match("}")) parts.push(next()); consume(";"); return { type: "ExpressionStatement", value: parts.join(" ") };
+        if (peek() === "return") {
+          next();
+          const expr = [];
+          while (i < tokens.length && !match(";")) expr.push(next());
+          consume(";");
+          return { type: "ReturnStatement", value: expr.join(" ") };
+        }
+        const parts = [];
+        while (i < tokens.length && !match(";") && !match("}")) parts.push(next());
+        consume(";");
+        return { type: "ExpressionStatement", value: parts.join(" ") };
       }
+
       return parseProgram();
     }
 
-    function renderAstNode(node, container, depth = 0) {
+    function renderAstNode(node, container) {
       if (!node) return;
       const wrap = document.createElement("div");
       wrap.className = "ast-node";
@@ -1478,8 +1493,85 @@ using namespace std;
         const childWrap = document.createElement("div");
         childWrap.className = "ast-children";
         container.appendChild(childWrap);
-        children.forEach(child => renderAstNode(child, childWrap, depth + 1));
+        children.forEach(child => renderAstNode(child, childWrap));
       }
+    }
+
+    function renderMathNode(node, container) {
+      if (!node) return;
+      const wrap = document.createElement("div");
+      wrap.className = "math-node";
+      let label = node.type || "Unknown";
+      if (node.type === "MathParseError") label = `MathParseError: ${node.message}`;
+      else if (node.type === "Equation") label = `Equation: ${node.raw}`;
+      else if (node.type === "Expression") label = `Expression: ${node.raw}`;
+      else if (node.type === "Operator") label = `Operator: ${node.value}`;
+      else if (node.type === "Number") label = `Number: ${node.value}`;
+      else if (node.type === "Variable") label = `Variable: ${node.value}`;
+      else if (node.type === "FunctionCall") label = `FunctionCall: ${node.name}()`;
+      else if (node.type === "BalanceIssue") label = `BalanceIssue: ${node.message}`;
+      wrap.innerHTML = `<span class="kind">${escapeHtml(label)}</span>`;
+      container.appendChild(wrap);
+
+      const kids = node.children || [];
+      if (kids.length) {
+        const childWrap = document.createElement("div");
+        childWrap.className = "math-children";
+        container.appendChild(childWrap);
+        kids.forEach(k => renderMathNode(k, childWrap));
+      }
+    }
+
+    function buildMathTree(code) {
+      const mathLines = [];
+      const lines = String(code || "").split(/\r?\n/);
+      const exprRe = /(?<![A-Za-z0-9_])([A-Za-z_]\w*|\d+(?:\.\d+)?)\s*([+\-*/^=<>]|<=|>=|==|!=)\s*([A-Za-z_]\w*|\d+(?:\.\d+)?)/g;
+      const funcRe = /\b(sin|cos|tan|sqrt|log|pow|abs|min|max|floor|ceil)\s*\((.*?)\)/g;
+
+      lines.forEach((line, idx) => {
+        let m;
+        while ((m = exprRe.exec(line)) !== null) {
+          mathLines.push({
+            type: "Equation",
+            raw: line.trim(),
+            children: [
+              { type: /^[0-9.]+$/.test(m[1]) ? "Number" : "Variable", value: m[1], children: [] },
+              { type: "Operator", value: m[2], children: [] },
+              { type: /^[0-9.]+$/.test(m[3]) ? "Number" : "Variable", value: m[3], children: [] }
+            ]
+          });
+        }
+        while ((m = funcRe.exec(line)) !== null) {
+          mathLines.push({
+            type: "FunctionCall",
+            name: m[1],
+            children: [
+              { type: "Expression", raw: m[2], children: [] }
+            ]
+          });
+        }
+      });
+
+      const balance = [];
+      const pairs = { "(": ")", "[": "]", "{": "}" };
+      for (const ch of String(code || "")) {
+        if (pairs[ch]) balance.push(ch);
+        else if (Object.values(pairs).includes(ch)) {
+          const last = balance.pop();
+          if (!last || pairs[last] !== ch) {
+            mathLines.unshift({ type: "BalanceIssue", message: `Mất cân bằng ngoặc tại ký tự "${ch}"`, children: [] });
+            break;
+          }
+        }
+      }
+      if (balance.length) {
+        mathLines.unshift({ type: "BalanceIssue", message: `Còn thiếu ${balance.length} ngoặc đóng`, children: [] });
+      }
+
+      return {
+        type: "MathReport",
+        children: mathLines.length ? mathLines : [{ type: "Expression", raw: "Không tìm thấy biểu thức/toán học rõ ràng.", children: [] }]
+      };
     }
 
     function updateAstView() {
@@ -1496,179 +1588,44 @@ using namespace std;
       renderAstNode(ast, view);
     }
 
-    function tokenizeMathExpression(expr) {
-      const tokens = [];
-      const re = /\s+|<=|>=|==|!=|&&|\|\||[()+\-*/^=,]|(?:\d*\.\d+|\d+)|[A-Za-z_]\w*|./g;
-      let m;
-      while ((m = re.exec(expr)) !== null) {
-        const t = m[0];
-        if (/^\s+$/.test(t)) continue;
-        tokens.push(t);
-      }
-      return tokens;
-    }
-
-    function parseMathExpression(expr) {
-      const tokens = tokenizeMathExpression(expr);
-      let i = 0;
-      const peek = () => tokens[i];
-      const next = () => tokens[i++];
-      const match = (t) => peek() === t;
-      const consume = (t) => { if (match(t)) return next(); return null; };
-
-      function parsePrimary() {
-        const t = peek();
-        if (t === "(") {
-          next();
-          const node = parseAssignment();
-          consume(")");
-          return { type: "Group", child: node };
-        }
-        if (/^\d*\.?\d+$/.test(t || "")) return { type: "NumberLiteral", value: next() };
-        if (/^[A-Za-z_]\w*$/.test(t || "")) {
-          const name = next();
-          if (match("(")) {
-            next();
-            const args = [];
-            if (!match(")")) {
-              do { args.push(parseAssignment()); } while (consume(","));
-            }
-            consume(")");
-            return { type: "FunctionCall", name, args };
-          }
-          return { type: "Identifier", name };
-        }
-        return { type: "UnknownToken", value: next() };
-      }
-
-      function parseUnary() {
-        if (match("+") || match("-")) return { type: "UnaryExpression", operator: next(), argument: parseUnary() };
-        return parsePrimary();
-      }
-
-      function parsePower() {
-        let node = parseUnary();
-        while (match("^")) node = { type: "BinaryExpression", operator: next(), left: node, right: parseUnary() };
-        return node;
-      }
-
-      function parseMulDiv() {
-        let node = parsePower();
-        while (match("*") || match("/")) node = { type: "BinaryExpression", operator: next(), left: node, right: parsePower() };
-        return node;
-      }
-
-      function parseAddSub() {
-        let node = parseMulDiv();
-        while (match("+") || match("-")) node = { type: "BinaryExpression", operator: next(), left: node, right: parseMulDiv() };
-        return node;
-      }
-
-      function parseComparison() {
-        let node = parseAddSub();
-        while (["<", ">", "<=", ">=", "==", "!="].includes(peek())) node = { type: "ComparisonExpression", operator: next(), left: node, right: parseAddSub() };
-        return node;
-      }
-
-      function parseLogical() {
-        let node = parseComparison();
-        while (match("&&") || match("||")) node = { type: "LogicalExpression", operator: next(), left: node, right: parseComparison() };
-        return node;
-      }
-
-      function parseAssignment() {
-        const left = parseLogical();
-        if (match("=")) return { type: "AssignmentExpression", operator: next(), left, right: parseAssignment() };
-        return left;
-      }
-
-      return parseAssignment();
-    }
-
-    function renderMathNode(node, container, depth = 0) {
-      if (!node) return;
-      const div = document.createElement("div");
-      div.className = "math-node" + (depth === 0 ? " pro" : "");
-      let label = node.type || "Unknown";
-      if (node.type === "NumberLiteral") label = `NumberLiteral: ${node.value}`;
-      if (node.type === "Identifier") label = `Identifier: ${node.name}`;
-      if (node.type === "UnaryExpression") label = `UnaryExpression (${node.operator})`;
-      if (node.type === "BinaryExpression") label = `BinaryExpression (${node.operator})`;
-      if (node.type === "ComparisonExpression") label = `ComparisonExpression (${node.operator})`;
-      if (node.type === "LogicalExpression") label = `LogicalExpression (${node.operator})`;
-      if (node.type === "AssignmentExpression") label = `AssignmentExpression (${node.operator})`;
-      if (node.type === "FunctionCall") label = `FunctionCall ${node.name}()`;
-      if (node.type === "Group") label = `Group`;
-      if (node.type === "UnknownToken") label = `UnknownToken: ${node.value}`;
-      div.innerHTML = `<span class="kind">${escapeHtml(label)}</span>`;
-      container.appendChild(div);
-
-      const children = [];
-      if (node.child) children.push(node.child);
-      if (node.argument) children.push(node.argument);
-      if (node.left) children.push(node.left);
-      if (node.right) children.push(node.right);
-      if (Array.isArray(node.args)) children.push(...node.args);
-
-      if (children.length) {
-        const sub = document.createElement("div");
-        sub.style.marginLeft = "14px";
-        sub.style.borderLeft = "1px dashed var(--border)";
-        sub.style.paddingLeft = "10px";
-        container.appendChild(sub);
-        children.forEach(ch => renderMathNode(ch, sub, depth + 1));
-      }
-    }
-
-    function analyzeMathErrors(code) {
-      const result = [];
-      const lines = String(code || "").split(/\r?\n/);
-      lines.forEach((line, idx) => {
-        const expr = line.trim();
-        if (!expr) return;
-        const suspicious = [];
-        if (/\b(1\s*\/\s*0|0\s*\/\s*0)\b/.test(expr)) suspicious.push("Chia cho 0");
-        if (/\(\s*\)/.test(expr)) suspicious.push("Cặp ngoặc rỗng");
-        if ((expr.match(/\(/g) || []).length !== (expr.match(/\)/g) || []).length) suspicious.push("Mất cân bằng ngoặc");
-        if (/[+\-*/^]{2,}/.test(expr.replace(/==|!=|<=|>=|&&|\|\|/g, ""))) suspicious.push("Toán tử liên tiếp bất thường");
-        if (/[^0-9A-Za-z_+\-*/^=(),.<>\s]/.test(expr)) suspicious.push("Ký tự lạ");
-        const ast = parseMathExpression(expr);
-        if (ast.type === "UnknownToken") suspicious.push("Không đọc được biểu thức");
-        result.push({
-          line: idx + 1,
-          expr,
-          suspicious,
-          ast
-        });
-      });
-      return result;
-    }
-
-    function refreshMathInspector() {
+    function updateMathView() {
       const view = document.getElementById("mathView");
-      if (!view) return;
+      const list = document.getElementById("mathList");
       const active = getActiveTab();
-      const code = active ? active.code : "";
-      const findings = analyzeMathErrors(code);
-      view.innerHTML = "";
-      if (!findings.length) {
-        view.textContent = "Không có dữ liệu để soi.";
+      if (!active) {
+        view.textContent = "No active file.";
+        list.style.display = "none";
         return;
       }
+      const report = buildMathTree(active.code || "");
+      view.innerHTML = "";
+      renderMathNode(report, view);
 
-      findings.forEach(item => {
-        const block = document.createElement("div");
-        block.className = "math-node" + (item.suspicious.length ? " pro" : "");
-        const flag = item.suspicious.length
-          ? `<span class="math-badge">⚠ ${escapeHtml(item.suspicious.join(" • "))}</span>`
-          : `<span class="good">OK</span>`;
-        block.innerHTML = `<div><b>Dòng ${item.line}</b> — ${flag}</div><div style="margin-top:6px; color: var(--muted); white-space: pre-wrap;">${escapeHtml(item.expr)}</div>`;
-        const astWrap = document.createElement("div");
-        astWrap.style.marginTop = "8px";
-        block.appendChild(astWrap);
-        renderMathNode(item.ast, astWrap);
-        view.appendChild(block);
-      });
+      const items = [];
+      const code = active.code || "";
+      const issues = [];
+      if (/[^\dA-Za-z_]\s*\/\s*0(?!\d)/.test(code) || /\/\s*\b0\b/.test(code)) issues.push("Có khả năng chia cho 0.");
+      if (/\bpow\s*\(\s*[^,]+,\s*-\d+/.test(code)) issues.push("Số mũ âm trong pow() cần kiểm tra kiểu dữ liệu.");
+      if (/\b(sqrt)\s*\(\s*-\d+/.test(code)) issues.push("sqrt() với số âm.");
+      if (/\b\d+\s*\/\s*\d+\b/.test(code)) issues.push("Phép chia hằng số có thể là số nguyên nếu dùng int.");
+      if (/\b(a|b|c|x|y|z)\s*=\s*[^;]*[+\-*/^][^;]*;/.test(code)) issues.push("Biểu thức gán có toán tử, nên kiểm tra ưu tiên toán tử.");
+
+      if (issues.length) {
+        setMathState(`${issues.length} cảnh báo`, "warn");
+        list.style.display = "block";
+        list.innerHTML = "";
+        issues.forEach((msg, idx) => {
+          const el = document.createElement("div");
+          el.className = "math-item";
+          el.innerHTML = `<strong>Math Warning ${idx + 1}:</strong> ${escapeHtml(msg)}`;
+          el.onclick = () => setStatus(msg);
+          list.appendChild(el);
+        });
+      } else {
+        setMathState("OK", "good");
+        list.style.display = "none";
+        list.innerHTML = "";
+      }
     }
 
     function bundleProjectSources() {
@@ -2079,9 +2036,23 @@ using namespace std;
     function openAboutDialog() {
       showModal({
         title: "Minh IDE Pro - Thuyết minh sản phẩm",
-        body: `<div class="article-section"><h3>1. Tính mới, tính sáng tạo</h3><ul><li>Smart Bundle Compilation: tự động duyệt đệ quy các chỉ thị <code>#include "..."</code> để gom nhiều file thành một gói dữ liệu duy nhất.</li><li>Terminal giả lập và Project Tree hoàn toàn client-side.</li><li>Local Backup & Restore lưu cả con trỏ, vị trí cuộn và mã nguồn.</li><li>AST Parser tích hợp: dùng Acorn cho JavaScript và parser C++ subset riêng để hiển thị cây AST trực quan.</li><li><b>Math Inspector PRO</b>: soi biểu thức toán học, phát hiện chia cho 0, ngoặc lệch, toán tử lạ và dựng “cây lỗi” riêng kiểu quân sư Zhuge Liang.</li></ul><h3>2. Nguyên vật liệu / công nghệ</h3><ul><li>HTML5, CSS3 với biến theme Light/Dark.</li><li>JavaScript thuần, không phụ thuộc framework nặng.</li><li>Monaco Editor từ CDN; Judge0 CE cho biên dịch/chạy.</li><li>Acorn cho AST JavaScript; parser tùy biến cho C++ subset; parser biểu thức toán học PRO.</li></ul></div>`,
+        body: `<div class="article-section"><h3>1. Tính mới, tính sáng tạo</h3><ul><li>Smart Bundle Compilation: tự động duyệt đệ quy các chỉ thị <code>#include "..."</code> để gom nhiều file thành một gói dữ liệu duy nhất.</li><li>Terminal giả lập và Project Tree hoàn toàn client-side.</li><li>Local Backup & Restore lưu cả con trỏ, vị trí cuộn và mã nguồn.</li><li>AST Parser tích hợp: dùng Acorn cho JavaScript và parser C++ subset riêng để hiển thị cây AST trực quan.</li><li>Math Inspector: quét biểu thức toán học, cân bằng ngoặc, phát hiện chia cho 0, sqrt âm, pow mũ âm, và các lỗi logic cơ bản giống AST.</li></ul><h3>2. Nguyên vật liệu / công nghệ</h3><ul><li>HTML5, CSS3 với biến theme Light/Dark.</li><li>JavaScript thuần, không phụ thuộc framework nặng.</li><li>Monaco Editor từ CDN; Judge0 CE cho biên dịch/chạy.</li><li>Acorn cho AST JavaScript; parser tùy biến cho C++ subset; bộ soi lỗi toán học tự viết.</li></ul></div>`,
         buttons: [{ text: "Đóng", primary: true, onClick: closeModal }]
       });
+    }
+
+    function openMathInspector() {
+      validateMath();
+      showModal({
+        title: "Math Inspector",
+        body: `<div>Đây là bộ soi lỗi toán học/biểu thức. Nó hiển thị như AST thu gọn để bạn rà soát lỗi.</div>`,
+        buttons: [{ text: "Đóng", primary: true, onClick: closeModal }]
+      });
+    }
+
+    function validateMath() {
+      updateMathView();
+      saveProjectState(true);
     }
 
     window.addEventListener("beforeunload", () => saveProjectState(true));
@@ -2133,7 +2104,6 @@ using namespace std;
       appendTerminal("IDE ready.");
       openAboutDialog();
       renderUserState();
-      refreshMathInspector();
 
       editor.onDidChangeModelContent(function () {
         const active = getActiveTab();
@@ -2183,16 +2153,17 @@ using namespace std;
     document.getElementById("fileInput").addEventListener("change", handleFileOpen);
     document.getElementById("modalOverlay").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
 
-    function validateSyntax() {
+    const originalValidateSyntax = validateSyntax;
+    validateSyntax = function () {
       if (!editor || !window.monaco) return;
       const model = editor.getModel();
       monaco.editor.setModelLanguage(model, detectLanguageByFileName(getActiveTab()?.name || "main.cpp"));
       updateProblemIndicators();
       analyzeAlgorithm();
       updateAstView();
-      refreshMathInspector();
+      validateMath();
       saveProjectState();
-    }
+    };
   </script>
 </body>
 </html>
