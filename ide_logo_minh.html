@@ -232,6 +232,28 @@
       white-space: nowrap;
     }
 
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(127,127,127,0.08);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .user-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 3px rgba(47, 168, 79, 0.16);
+    }
+
     .main {
       flex: 1;
       display: flex;
@@ -567,7 +589,7 @@
     }
 
     .modal-body .field { margin-top: 12px; }
-    .modal-body input, .modal-body textarea {
+    .modal-body input, .modal-body textarea, .modal-body select {
       width: 100%;
       margin-top: 6px;
       padding: 11px 12px;
@@ -584,7 +606,7 @@
       resize: vertical;
     }
 
-    .modal-body input:focus, .modal-body textarea:focus {
+    .modal-body input:focus, .modal-body textarea:focus, .modal-body select:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.15);
     }
@@ -626,6 +648,204 @@
 
     .article-section li { margin: 6px 0; }
 
+    .doc-grid{
+      display:grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+    .doc-card{
+      background: var(--panel);
+      border:1px solid var(--border);
+      border-radius:14px;
+      min-height:140px;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      box-shadow: var(--shadow);
+    }
+    .doc-thumb{
+      height:72px;
+      border-radius:10px;
+      background: linear-gradient(135deg, rgba(66,133,244,.14), rgba(47,111,228,.04));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      margin-bottom:10px;
+      font-size: 28px;
+      color: var(--accent);
+    }
+    .doc-thumb img, .doc-thumb video{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .doc-name{
+      font-size:12px;
+      font-weight:700;
+      color:var(--text);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .doc-actions{ display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+    .doc-actions button{ padding:7px 9px; font-size:11px; }
+    .doc-plus{
+      border:2px dashed var(--border);
+      background: transparent;
+      color: var(--accent);
+      border-radius:14px;
+      min-height:140px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:36px;
+      cursor:pointer;
+    }
+    .doc-view{
+      width:100%;
+      min-height:65vh;
+      border:0;
+      outline:none;
+      background:var(--panel);
+      color:var(--text);
+      padding:16px;
+      border-radius:12px;
+      overflow:auto;
+    }
+    .doc-toolbar{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      padding:12px 16px;
+      border-bottom:1px solid var(--border);
+      background:var(--panel-2);
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .doc-page{
+      width:100%;
+      min-height:100vh;
+      background:var(--bg);
+    }
+
+    .ast-panel {
+      border-top: 1px solid var(--border);
+      background: var(--panel);
+      max-height: 280px;
+      overflow: auto;
+      padding: 10px 12px;
+      font-family: "Roboto Mono", monospace;
+      font-size: 12px;
+    }
+    .ast-node {
+      margin: 4px 0;
+      padding: 4px 8px;
+      border-left: 2px solid var(--accent);
+      background: rgba(66, 133, 244, 0.06);
+      border-radius: 4px;
+    }
+    .ast-node .kind { font-weight: 700; color: var(--accent); }
+    .ast-children { margin-left: 14px; border-left: 1px dashed var(--border); padding-left: 10px; }
+
+    .auth-shell {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+    }
+    .auth-hero {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      background: linear-gradient(135deg, rgba(66,133,244,.10), rgba(66,133,244,.03));
+    }
+    .auth-hero h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .auth-hero p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+    }
+    .auth-form {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      background: var(--panel);
+    }
+    .social-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .social-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 700;
+      transition: .15s ease;
+    }
+    .social-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .social-btn .icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .google { background: #ea4335; }
+    .facebook { background: #1877f2; }
+    .github { background: #24292e; }
+
+    .math-panel {
+      border-top: 1px solid var(--border);
+      background: var(--panel);
+      max-height: 320px;
+      overflow: auto;
+      padding: 10px 12px;
+      font-family: "Roboto Mono", monospace;
+      font-size: 12px;
+    }
+    .math-node {
+      margin: 5px 0;
+      padding: 6px 8px;
+      border-left: 2px solid #8b5cf6;
+      background: rgba(139, 92, 246, 0.08);
+      border-radius: 6px;
+    }
+    .math-node .kind {
+      font-weight: 800;
+      color: #8b5cf6;
+    }
+    .math-node.pro {
+      border-left-color: #f59e0b;
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.12), rgba(139, 92, 246, 0.06));
+    }
+    .math-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: var(--warning);
+    }
+
+    @media (max-width: 1200px) { .doc-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     @media (max-width: 900px) {
       .main { flex-direction: column; }
       .sidebar {
@@ -636,6 +856,8 @@
       }
       .editor-wrap { border-right: none; }
       .status { display: none; }
+      .doc-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .auth-shell { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -649,6 +871,7 @@
 
       <div class="top-actions">
         <div class="status" id="status">Ready</div>
+        <div id="userBadgeArea"></div>
         <button class="btn-outline" id="themeBtn" onclick="toggleTheme()">🌓 Dark Mode</button>
         <button class="btn-outline" onclick="openSearchDialog()">🔎 Search</button>
         <button class="btn-outline" id="renameBtn" onclick="openRenameDialog()">✎ Đổi tên</button>
@@ -657,6 +880,9 @@
         <button class="btn-outline" id="openBtn" onclick="document.getElementById('fileInput').click()">📂 Mở file</button>
         <button class="btn-outline" onclick="saveCurrentFile()">💾 Save file</button>
         <button class="btn-outline" onclick="restoreBackup()">♻ Restore Backup</button>
+        <button class="btn-outline" id="authBtn" onclick="openLoginDialog()">👤 Login / Register</button>
+        <button class="btn-outline" onclick="openReferenceDocuments()">📚 My refrence document</button>
+        <button class="btn-outline" onclick="openMathInspector()">🧮 Math Inspector PRO</button>
         <button class="btn" id="runBtn" onclick="runCode()">▶ Run</button>
         <button class="btn danger" id="cancelBtn" onclick="cancelAction()" style="display:none;">✖ Cancel</button>
         <button class="btn secondary" onclick="downloadProject()">⬇ Download Project</button>
@@ -726,6 +952,26 @@
         </div>
 
         <div class="panel" style="flex: 0 0 auto;">
+          <div class="panel-title">
+            <span>AST VIEW</span>
+            <div class="small-actions">
+              <button class="btn-outline" style="padding: 5px 10px;" onclick="validateSyntax()">Refresh AST</button>
+            </div>
+          </div>
+          <div class="ast-panel" id="astView">AST will appear here.</div>
+        </div>
+
+        <div class="panel" style="flex: 0 0 auto;">
+          <div class="panel-title">
+            <span>MATH INSPECTOR PRO</span>
+            <div class="small-actions">
+              <button class="btn-outline" style="padding: 5px 10px;" onclick="refreshMathInspector()">Refresh</button>
+            </div>
+          </div>
+          <div class="math-panel" id="mathView">Math inspector will appear here.</div>
+        </div>
+
+        <div class="panel" style="flex: 0 0 auto;">
           <div class="panel-title">RESULT</div>
           <div class="stats">
             <div>Syntax Check: <span id="syntaxState" class="good">OK</span></div>
@@ -739,6 +985,7 @@
             Phím tắt: <code>Ctrl + Enter</code> để chạy, <code>Ctrl + S</code> để tải code, <code>Ctrl + O</code> để mở file, <code>Ctrl + F</code> để search.
             <div class="footer-note">
               Hỗ trợ multi-file, project tree, backup phục hồi, search/replace, terminal, phân tích thuật toán cơ bản, và đóng gói project trước khi chạy.
+              <br />Giờ có thêm <b>Math Inspector PRO</b> kiểu “soi lỗi toán học” như AST, nhưng soi biểu thức như quân sư Zhuge Liang.
             </div>
           </div>
         </div>
@@ -755,6 +1002,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/acorn@8.12.1/dist/acorn.min.js"></script>
   <script>
     require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs' } });
 
@@ -767,22 +1015,18 @@
       }
     };
 
-    let editor;
-    let running = false;
-    let lintTimer = null;
-    let tabs = [];
-    let activeTabId = null;
-    let tabCounter = 1;
+    let editor, running = false, lintTimer = null, tabs = [], activeTabId = null, tabCounter = 1;
     let currentTheme = localStorage.getItem("minh_ide_theme") || "light";
-    let lastCursorState = null;
-    let currentSearchTerm = "";
-    let currentSearchIndex = 0;
+    let lastCursorState = null, currentSearchTerm = "", currentSearchIndex = 0;
 
     const MAX_FILE_SIZE = 256 * 1024;
     const MAX_TOTAL_FILES = 50;
     const ALLOWED_EXTENSIONS = new Set(["cpp","cc","cxx","c","h","hpp","hh","inc","inl","ipp","tpp","txt","java","py","js","ts","html","css","json","md"]);
     const BASE_STORAGE_KEY = "minh_ide_project_v5";
     const BACKUP_STORAGE_KEY = "minh_ide_project_v5_backup";
+    const USERS_KEY = "minh_ide_users_v1";
+    const REFS_KEY = "minh_ide_refs_v1";
+    const SESSION_KEY = "minh_ide_session_v1";
 
     const DEFAULT_MAIN = `#include <bits/stdc++.h>
 using namespace std;
@@ -799,27 +1043,7 @@ int main() {
 using namespace std;
 `;
 
-    function applyTheme() {
-      document.body.classList.toggle("dark", currentTheme === "dark");
-      const btn = document.getElementById("themeBtn");
-      btn.innerText = currentTheme === "dark" ? "☀ Light Mode" : "🌓 Dark Mode";
-      if (editor && window.monaco) monaco.editor.setTheme(currentTheme === "dark" ? "vs-dark" : "vs");
-      localStorage.setItem("minh_ide_theme", currentTheme);
-    }
-
-    function toggleTheme() { currentTheme = currentTheme === "dark" ? "light" : "dark"; applyTheme(); }
-    function setStatus(text) { document.getElementById("status").innerText = text; }
-    function setOutput(text, color = null) { const output = document.getElementById("output"); output.style.color = color || "var(--text)"; output.innerText = text; }
-    function setSyntaxState(text, cls = "good") { const el = document.getElementById("syntaxState"); el.className = cls; el.innerText = text; }
-    function resetStats() { document.getElementById("time").innerText = "0 ms"; document.getElementById("memory").innerText = "0 KB"; }
-    function setBackupState(text) { document.getElementById("backupState").innerText = text; }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll("&", "&amp;").replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
-    }
-
+    function escapeHtml(str) { return String(str).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
     function sanitizePath(path) { return String(path || "").trim().replace(/\\+/g, "/").replace(/^\/+/, "").replace(/\/+/g, "/"); }
     function sanitizeName(name) { return String(name || "").trim().replace(/[\\/:*?"<>|]/g, ""); }
     function fileExt(name) { return (name.split(".").pop() || "").toLowerCase(); }
@@ -827,6 +1051,19 @@ using namespace std;
     function isValidFileName(name) { name = sanitizeName(name); return !!name && !name.includes("/") && /^[A-Za-z0-9._-]+$/.test(name) && isAllowedExtension(name); }
     function getActiveTab() { return tabs.find(t => t.id === activeTabId) || null; }
 
+    function applyTheme() {
+      document.body.classList.toggle("dark", currentTheme === "dark");
+      const btn = document.getElementById("themeBtn");
+      btn.innerText = currentTheme === "dark" ? "☀ Light Mode" : "🌓 Dark Mode";
+      if (editor && window.monaco) monaco.editor.setTheme(currentTheme === "dark" ? "vs-dark" : "vs");
+      localStorage.setItem("minh_ide_theme", currentTheme);
+    }
+    function toggleTheme() { currentTheme = currentTheme === "dark" ? "light" : "dark"; applyTheme(); }
+    function setStatus(text) { document.getElementById("status").innerText = text; }
+    function setOutput(text, color = null) { const output = document.getElementById("output"); output.style.color = color || "var(--text)"; output.innerText = text; }
+    function setSyntaxState(text, cls = "good") { const el = document.getElementById("syntaxState"); el.className = cls; el.innerText = text; }
+    function resetStats() { document.getElementById("time").innerText = "0 ms"; document.getElementById("memory").innerText = "0 KB"; }
+    function setBackupState(text) { document.getElementById("backupState").innerText = text; }
     function showModal({ title, body, buttons = [] }) {
       const overlay = document.getElementById("modalOverlay");
       document.getElementById("modalTitle").textContent = title;
@@ -842,21 +1079,14 @@ using namespace std;
       });
       overlay.classList.add("show");
     }
-
     function closeModal() { document.getElementById("modalOverlay").classList.remove("show"); }
+
     function validateFileNameUnique(newName, ignoreTabId = null) {
       newName = sanitizeName(newName);
       if (!isValidFileName(newName)) return "Tên file không hợp lệ.";
       const duplicate = tabs.find(t => t.name.toLowerCase() === newName.toLowerCase() && t.id !== ignoreTabId);
       if (duplicate) return `Tên file đã tồn tại: ${newName}`;
       return null;
-    }
-
-    function setMonacoLanguageForActiveTab() {
-      if (!editor || !window.monaco) return;
-      const active = getActiveTab();
-      if (!active) return;
-      monaco.editor.setModelLanguage(editor.getModel(), detectLanguageByFileName(active.name));
     }
 
     function detectLanguageByFileName(name) {
@@ -870,6 +1100,13 @@ using namespace std;
       if (ext === "json") return "json";
       if (ext === "md") return "markdown";
       return "plaintext";
+    }
+
+    function setMonacoLanguageForActiveTab() {
+      if (!editor || !window.monaco) return;
+      const active = getActiveTab();
+      if (!active) return;
+      monaco.editor.setModelLanguage(editor.getModel(), detectLanguageByFileName(active.name));
     }
 
     function saveCursorState() {
@@ -887,7 +1124,14 @@ using namespace std;
 
     function saveProjectState(isBackup = false) {
       if (!editor) return;
-      const payload = { theme: currentTheme, tabs, activeTabId, stdin: document.getElementById("input").value, cursor: lastCursorState, timestamp: Date.now() };
+      const payload = {
+        theme: currentTheme,
+        tabs,
+        activeTabId,
+        stdin: document.getElementById("input").value,
+        cursor: lastCursorState,
+        timestamp: Date.now()
+      };
       localStorage.setItem(BASE_STORAGE_KEY, JSON.stringify(payload));
       if (isBackup) {
         localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(payload));
@@ -918,12 +1162,7 @@ using namespace std;
         const tabEl = document.createElement("div");
         tabEl.className = "tab" + (tab.id === activeTabId ? " active" : "");
         tabEl.onclick = () => switchTab(tab.id);
-        tabEl.innerHTML = `
-          <span class="file-icon">📄</span>
-          <span class="tab-title">${escapeHtml(tab.path || tab.name)}</span>
-          ${tab.unsaved ? '<span class="unsaved">•</span>' : ''}
-          <button class="tab-close" title="Close tab">×</button>
-        `;
+        tabEl.innerHTML = `<span class="file-icon">📄</span><span class="tab-title">${escapeHtml(tab.path || tab.name)}</span>${tab.unsaved ? '<span class="unsaved">•</span>' : ''}<button class="tab-close" title="Close tab">×</button>`;
         tabEl.querySelector(".tab-close").onclick = (e) => { e.stopPropagation(); confirmCloseTab(tab.id); };
         tabsContainer.appendChild(tabEl);
       });
@@ -934,6 +1173,15 @@ using namespace std;
       newBtn.onclick = newTab;
       tabsContainer.appendChild(newBtn);
       renderProjectTree();
+    }
+
+    function getDefaultContentForFile(name) {
+      const ext = fileExt(name);
+      if (["h","hpp","hh","inc","inl","ipp","tpp"].includes(ext)) return DEFAULT_HEADER;
+      if (ext === "html") return "<!DOCTYPE html>\\n<html>\\n<head><meta charset=\"UTF-8\"><title>New File</title></head>\\n<body>\\n</body>\\n</html>";
+      if (ext === "js") return "console.log('Hello Minh IDE Pro');";
+      if (ext === "py") return "print('Hello Minh IDE Pro')";
+      return DEFAULT_MAIN;
     }
 
     function createTab(name, code = "", path = null) {
@@ -956,15 +1204,6 @@ using namespace std;
     function newTab() {
       const suggested = tabs.some(t => t.name.toLowerCase() === "main.cpp") ? `file_${tabCounter}.cpp` : "main.cpp";
       createTab(suggested, getDefaultContentForFile(suggested), suggested);
-    }
-
-    function getDefaultContentForFile(name) {
-      const ext = fileExt(name);
-      if (["h","hpp","hh","inc","inl","ipp","tpp"].includes(ext)) return DEFAULT_HEADER;
-      if (["html"].includes(ext)) return "<!DOCTYPE html>\n<html>\n<head><meta charset=\"UTF-8\"><title>New File</title></head>\n<body>\n</body>\n</html>";
-      if (["js"].includes(ext)) return "console.log('Hello Minh IDE Pro');";
-      if (["py"].includes(ext)) return "print('Hello Minh IDE Pro')";
-      return DEFAULT_MAIN;
     }
 
     function switchTab(id) {
@@ -1034,12 +1273,7 @@ using namespace std;
       if (!active) return;
       showModal({
         title: "Đổi tên file",
-        body: `
-          <div>Nhập tên mới cho file <b>${escapeHtml(active.path || active.name)}</b></div>
-          <div class="field">
-            <input id="renameInput" value="${escapeHtml(active.path || active.name)}" />
-          </div>
-        `,
+        body: `<div>Nhập tên mới cho file <b>${escapeHtml(active.path || active.name)}</b></div><div class="field"><input id="renameInput" value="${escapeHtml(active.path || active.name)}" /></div>`,
         buttons: [
           { text: "Hủy", onClick: closeModal },
           { text: "Lưu", primary: true, onClick: () => renameActiveTab(document.getElementById("renameInput").value) }
@@ -1069,13 +1303,7 @@ using namespace std;
     function openFolderDialog() {
       showModal({
         title: "Tạo thư mục",
-        body: `
-          <div>Nhập tên thư mục mới hoặc đường dẫn thư mục.</div>
-          <div class="field">
-            <input id="folderInput" placeholder="src/utils" />
-            <div class="file-warning">Thư mục sẽ hiển thị trong Project Tree.</div>
-          </div>
-        `,
+        body: `<div>Nhập tên thư mục mới hoặc đường dẫn thư mục.</div><div class="field"><input id="folderInput" placeholder="src/utils" /><div class="file-warning">Thư mục sẽ hiển thị trong Project Tree.</div></div>`,
         buttons: [
           { text: "Hủy", onClick: closeModal },
           { text: "Tạo", primary: true, onClick: createFolderFromDialog }
@@ -1127,15 +1355,6 @@ using namespace std;
       event.target.value = "";
     }
 
-    function validateSyntax() {
-      if (!editor || !window.monaco) return;
-      const model = editor.getModel();
-      monaco.editor.setModelLanguage(model, detectLanguageByFileName(getActiveTab()?.name || "main.cpp"));
-      updateProblemIndicators();
-      analyzeAlgorithm();
-      saveProjectState();
-    }
-
     function updateProblemIndicators() {
       if (!editor || !window.monaco) return;
       const model = editor.getModel();
@@ -1143,7 +1362,6 @@ using namespace std;
       const errorCount = markers.filter(m => m.severity === monaco.MarkerSeverity.Error).length;
       const warningCount = markers.filter(m => m.severity === monaco.MarkerSeverity.Warning).length;
       const errorList = document.getElementById("errorList");
-
       if (errorCount > 0 || warningCount > 0) {
         errorList.style.display = "block";
         errorList.innerHTML = "";
@@ -1158,16 +1376,21 @@ using namespace std;
         errorList.style.display = "none";
         errorList.innerHTML = "";
       }
-
       if (errorCount > 0) { setStatus(`Syntax Error: ${errorCount} lỗi`); setSyntaxState(`${errorCount} lỗi`, "bad"); }
       else if (warningCount > 0) { setStatus(`Warning: ${warningCount} cảnh báo`); setSyntaxState(`${warningCount} cảnh báo`, "warn"); }
       else { setStatus(running ? "Running..." : "Ready"); setSyntaxState("OK", "good"); }
     }
 
-    function jumpToMarker(m) { if (!editor) return; editor.revealLineInCenter(m.startLineNumber); editor.setPosition({ lineNumber: m.startLineNumber, column: m.startColumn }); editor.focus(); }
+    function jumpToMarker(m) {
+      if (!editor) return;
+      editor.revealLineInCenter(m.startLineNumber);
+      editor.setPosition({ lineNumber: m.startLineNumber, column: m.startColumn });
+      editor.focus();
+    }
 
     function analyzeAlgorithm() {
-      const active = getActiveTab(); if (!active) return;
+      const active = getActiveTab();
+      if (!active) return;
       const code = active.code || "";
       let result = "Unknown";
       if (/sort\s*\(/.test(code) || /std::sort/.test(code)) result = "O(n log n)";
@@ -1178,7 +1401,279 @@ using namespace std;
       document.getElementById("detectedAlgo").innerText = result;
     }
 
-    function bundleProjectSources() { return { mainFile: getActiveTab()?.path || null, bundle: "", files: tabs.map(t => ({ path: sanitizePath(t.path || t.name), code: t.code || "" })) }; }
+    function buildJsAstTree(code) {
+      try { return acorn.parse(code, { ecmaVersion: "latest", sourceType: "module" }); }
+      catch (e) { return { type: "ParseError", message: e.message, loc: e.loc || null }; }
+    }
+
+    function tokenizeCpp(code) {
+      const tokens = [];
+      const re = /#include|#pragma|::|->|<=|>=|==|!=|&&|\|\||[A-Za-z_]\w*|\d+\.\d+|\d+|"(?:\\.|[^"])*"|'(?:\\.|[^'])*'|[{}()[\];,<>+\-*/=%!&|^~?:.]|\s+|./g;
+      let m;
+      while ((m = re.exec(code)) !== null) {
+        const v = m[0];
+        if (/^\s+$/.test(v)) continue;
+        tokens.push(v);
+      }
+      return tokens;
+    }
+
+    function parseCppSubset(code) {
+      const tokens = tokenizeCpp(code);
+      let i = 0;
+      const peek = () => tokens[i];
+      const next = () => tokens[i++];
+      const match = (t) => peek() === t;
+      const consume = (t) => { if (match(t)) return next(); return null; };
+
+      function parseProgram() {
+        const body = [];
+        while (i < tokens.length) body.push(parseTopLevel());
+        return { type: "Program", body };
+      }
+      function parseTopLevel() {
+        if (match("#include")) return parseInclude();
+        if (match("#pragma")) return parsePragma();
+        if (peek() === "int" && tokens[i + 1] === "main") return parseFunction();
+        if (/^[A-Za-z_]\w*$/.test(peek() || "") && tokens[i + 1] === "::") return parseNamespaceStmt();
+        return parseStatement();
+      }
+      function parseInclude() { next(); return { type: "IncludeDirective", value: next() || "" }; }
+      function parsePragma() { next(); const value = []; while (i < tokens.length && peek() !== "\n") value.push(next()); return { type: "PragmaDirective", value: value.join(" ") }; }
+      function parseNamespaceStmt() { const name = next(); next(); const member = next(); return { type: "NamespaceAccess", object: name, member }; }
+      function parseFunction() { next(); next(); consume("("); consume(")"); const body = parseBlock(); return { type: "FunctionDeclaration", returnType: "int", name: "main", body }; }
+      function parseBlock() { const stmts = []; consume("{"); while (i < tokens.length && !match("}")) stmts.push(parseStatement()); consume("}"); return { type: "BlockStatement", body: stmts }; }
+      function parseStatement() {
+        if (match("{")) return parseBlock();
+        if (peek() === "return") { next(); const expr = []; while (i < tokens.length && !match(";")) expr.push(next()); consume(";"); return { type: "ReturnStatement", value: expr.join(" ") }; }
+        const parts = []; while (i < tokens.length && !match(";") && !match("}")) parts.push(next()); consume(";"); return { type: "ExpressionStatement", value: parts.join(" ") };
+      }
+      return parseProgram();
+    }
+
+    function renderAstNode(node, container, depth = 0) {
+      if (!node) return;
+      const wrap = document.createElement("div");
+      wrap.className = "ast-node";
+      const kind = node.type || "Unknown";
+      let label = kind;
+
+      if (kind === "ParseError") label = `ParseError: ${node.message}`;
+      else if (kind === "IncludeDirective") label = `IncludeDirective ${node.value}`;
+      else if (kind === "PragmaDirective") label = `PragmaDirective ${node.value}`;
+      else if (kind === "FunctionDeclaration") label = `FunctionDeclaration ${node.returnType} ${node.name}()`;
+      else if (kind === "ReturnStatement") label = `ReturnStatement ${node.value}`;
+      else if (kind === "ExpressionStatement") label = `ExpressionStatement ${node.value}`;
+      else if (kind === "NamespaceAccess") label = `NamespaceAccess ${node.object}::${node.member}`;
+
+      wrap.innerHTML = `<span class="kind">${escapeHtml(label)}</span>`;
+      container.appendChild(wrap);
+
+      const children = [];
+      if (kind === "Program") children.push(...(node.body || []));
+      if (kind === "FunctionDeclaration" && node.body) children.push(node.body);
+      if (kind === "BlockStatement") children.push(...(node.body || []));
+
+      if (children.length) {
+        const childWrap = document.createElement("div");
+        childWrap.className = "ast-children";
+        container.appendChild(childWrap);
+        children.forEach(child => renderAstNode(child, childWrap, depth + 1));
+      }
+    }
+
+    function updateAstView() {
+      const view = document.getElementById("astView");
+      if (!view) return;
+      const active = getActiveTab();
+      if (!active) { view.textContent = "No active file."; return; }
+      const lang = detectLanguageByFileName(active.name);
+      view.innerHTML = "";
+      let ast;
+      if (lang === "javascript" || lang === "typescript") ast = buildJsAstTree(active.code || "");
+      else if (lang === "cpp") ast = parseCppSubset(active.code || "");
+      else ast = { type: "UnsupportedLanguage", language: lang, note: "AST preview only for JavaScript/C++ subset." };
+      renderAstNode(ast, view);
+    }
+
+    function tokenizeMathExpression(expr) {
+      const tokens = [];
+      const re = /\s+|<=|>=|==|!=|&&|\|\||[()+\-*/^=,]|(?:\d*\.\d+|\d+)|[A-Za-z_]\w*|./g;
+      let m;
+      while ((m = re.exec(expr)) !== null) {
+        const t = m[0];
+        if (/^\s+$/.test(t)) continue;
+        tokens.push(t);
+      }
+      return tokens;
+    }
+
+    function parseMathExpression(expr) {
+      const tokens = tokenizeMathExpression(expr);
+      let i = 0;
+      const peek = () => tokens[i];
+      const next = () => tokens[i++];
+      const match = (t) => peek() === t;
+      const consume = (t) => { if (match(t)) return next(); return null; };
+
+      function parsePrimary() {
+        const t = peek();
+        if (t === "(") {
+          next();
+          const node = parseAssignment();
+          consume(")");
+          return { type: "Group", child: node };
+        }
+        if (/^\d*\.?\d+$/.test(t || "")) return { type: "NumberLiteral", value: next() };
+        if (/^[A-Za-z_]\w*$/.test(t || "")) {
+          const name = next();
+          if (match("(")) {
+            next();
+            const args = [];
+            if (!match(")")) {
+              do { args.push(parseAssignment()); } while (consume(","));
+            }
+            consume(")");
+            return { type: "FunctionCall", name, args };
+          }
+          return { type: "Identifier", name };
+        }
+        return { type: "UnknownToken", value: next() };
+      }
+
+      function parseUnary() {
+        if (match("+") || match("-")) return { type: "UnaryExpression", operator: next(), argument: parseUnary() };
+        return parsePrimary();
+      }
+
+      function parsePower() {
+        let node = parseUnary();
+        while (match("^")) node = { type: "BinaryExpression", operator: next(), left: node, right: parseUnary() };
+        return node;
+      }
+
+      function parseMulDiv() {
+        let node = parsePower();
+        while (match("*") || match("/")) node = { type: "BinaryExpression", operator: next(), left: node, right: parsePower() };
+        return node;
+      }
+
+      function parseAddSub() {
+        let node = parseMulDiv();
+        while (match("+") || match("-")) node = { type: "BinaryExpression", operator: next(), left: node, right: parseMulDiv() };
+        return node;
+      }
+
+      function parseComparison() {
+        let node = parseAddSub();
+        while (["<", ">", "<=", ">=", "==", "!="].includes(peek())) node = { type: "ComparisonExpression", operator: next(), left: node, right: parseAddSub() };
+        return node;
+      }
+
+      function parseLogical() {
+        let node = parseComparison();
+        while (match("&&") || match("||")) node = { type: "LogicalExpression", operator: next(), left: node, right: parseComparison() };
+        return node;
+      }
+
+      function parseAssignment() {
+        const left = parseLogical();
+        if (match("=")) return { type: "AssignmentExpression", operator: next(), left, right: parseAssignment() };
+        return left;
+      }
+
+      return parseAssignment();
+    }
+
+    function renderMathNode(node, container, depth = 0) {
+      if (!node) return;
+      const div = document.createElement("div");
+      div.className = "math-node" + (depth === 0 ? " pro" : "");
+      let label = node.type || "Unknown";
+      if (node.type === "NumberLiteral") label = `NumberLiteral: ${node.value}`;
+      if (node.type === "Identifier") label = `Identifier: ${node.name}`;
+      if (node.type === "UnaryExpression") label = `UnaryExpression (${node.operator})`;
+      if (node.type === "BinaryExpression") label = `BinaryExpression (${node.operator})`;
+      if (node.type === "ComparisonExpression") label = `ComparisonExpression (${node.operator})`;
+      if (node.type === "LogicalExpression") label = `LogicalExpression (${node.operator})`;
+      if (node.type === "AssignmentExpression") label = `AssignmentExpression (${node.operator})`;
+      if (node.type === "FunctionCall") label = `FunctionCall ${node.name}()`;
+      if (node.type === "Group") label = `Group`;
+      if (node.type === "UnknownToken") label = `UnknownToken: ${node.value}`;
+      div.innerHTML = `<span class="kind">${escapeHtml(label)}</span>`;
+      container.appendChild(div);
+
+      const children = [];
+      if (node.child) children.push(node.child);
+      if (node.argument) children.push(node.argument);
+      if (node.left) children.push(node.left);
+      if (node.right) children.push(node.right);
+      if (Array.isArray(node.args)) children.push(...node.args);
+
+      if (children.length) {
+        const sub = document.createElement("div");
+        sub.style.marginLeft = "14px";
+        sub.style.borderLeft = "1px dashed var(--border)";
+        sub.style.paddingLeft = "10px";
+        container.appendChild(sub);
+        children.forEach(ch => renderMathNode(ch, sub, depth + 1));
+      }
+    }
+
+    function analyzeMathErrors(code) {
+      const result = [];
+      const lines = String(code || "").split(/\r?\n/);
+      lines.forEach((line, idx) => {
+        const expr = line.trim();
+        if (!expr) return;
+        const suspicious = [];
+        if (/\b(1\s*\/\s*0|0\s*\/\s*0)\b/.test(expr)) suspicious.push("Chia cho 0");
+        if (/\(\s*\)/.test(expr)) suspicious.push("Cặp ngoặc rỗng");
+        if ((expr.match(/\(/g) || []).length !== (expr.match(/\)/g) || []).length) suspicious.push("Mất cân bằng ngoặc");
+        if (/[+\-*/^]{2,}/.test(expr.replace(/==|!=|<=|>=|&&|\|\|/g, ""))) suspicious.push("Toán tử liên tiếp bất thường");
+        if (/[^0-9A-Za-z_+\-*/^=(),.<>\s]/.test(expr)) suspicious.push("Ký tự lạ");
+        const ast = parseMathExpression(expr);
+        if (ast.type === "UnknownToken") suspicious.push("Không đọc được biểu thức");
+        result.push({
+          line: idx + 1,
+          expr,
+          suspicious,
+          ast
+        });
+      });
+      return result;
+    }
+
+    function refreshMathInspector() {
+      const view = document.getElementById("mathView");
+      if (!view) return;
+      const active = getActiveTab();
+      const code = active ? active.code : "";
+      const findings = analyzeMathErrors(code);
+      view.innerHTML = "";
+      if (!findings.length) {
+        view.textContent = "Không có dữ liệu để soi.";
+        return;
+      }
+
+      findings.forEach(item => {
+        const block = document.createElement("div");
+        block.className = "math-node" + (item.suspicious.length ? " pro" : "");
+        const flag = item.suspicious.length
+          ? `<span class="math-badge">⚠ ${escapeHtml(item.suspicious.join(" • "))}</span>`
+          : `<span class="good">OK</span>`;
+        block.innerHTML = `<div><b>Dòng ${item.line}</b> — ${flag}</div><div style="margin-top:6px; color: var(--muted); white-space: pre-wrap;">${escapeHtml(item.expr)}</div>`;
+        const astWrap = document.createElement("div");
+        astWrap.style.marginTop = "8px";
+        block.appendChild(astWrap);
+        renderMathNode(item.ast, astWrap);
+        view.appendChild(block);
+      });
+    }
+
+    function bundleProjectSources() {
+      return { mainFile: getActiveTab()?.path || null, bundle: "", files: tabs.map(t => ({ path: sanitizePath(t.path || t.name), code: t.code || "" })) };
+    }
 
     async function runCode() {
       try {
@@ -1188,29 +1683,19 @@ using namespace std;
         setStatus("Đang đóng gói project...");
         appendTerminal("Building smart bundle...");
         const bundle = bundleProjectSources();
-
         const code = editor ? editor.getValue() : DEFAULT_MAIN;
         if (window.monaco) updateProblemIndicators();
-
-        const payload = {
-          language_id: 54,
-          source_code: code,
-          stdin: document.getElementById("input").value || "",
-          project_bundle: bundle
-        };
-
+        const payload = { language_id: 54, source_code: code, stdin: document.getElementById("input").value || "", project_bundle: bundle };
         const res = await fetch("https://ce.judge0.com/submissions?base64_encoded=false&wait=true&fields=stdout,stderr,compile_output,message,status,time,memory", {
           method: "POST",
           headers: { "Content-Type": "application/json", "X-Auth-Token": "" },
           body: JSON.stringify(payload)
         });
-
         const data = await res.json();
         const stdout = data.stdout || "";
         const stderr = data.stderr || "";
         const compileOutput = data.compile_output || "";
         const message = data.message || "";
-
         if (data.status && data.status.id === 3) {
           setOutput(stdout || "(No output)");
           setStatus("Chạy thành công");
@@ -1223,7 +1708,6 @@ using namespace std;
           setStatus("Có lỗi");
           appendTerminal("Execution failed.");
         }
-
       } catch (err) {
         setOutput("Không thể gọi Judge0 API hoặc bị chặn CORS.\nHãy chạy qua backend/proxy hoặc dùng API đã cấu hình.", "#e53935");
         setStatus("API error");
@@ -1237,7 +1721,6 @@ using namespace std;
     }
 
     function cancelAction() { setStatus("Cancelled"); setOutput("Cancelled", "#f4b400"); running = false; }
-
     function downloadCode() {
       const code = editor ? editor.getValue() : DEFAULT_MAIN;
       const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
@@ -1250,7 +1733,6 @@ using namespace std;
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
-
     function downloadProject() {
       const blob = new Blob([JSON.stringify(tabs, null, 2)], { type: "application/json;charset=utf-8" });
       const url = URL.createObjectURL(blob);
@@ -1262,7 +1744,6 @@ using namespace std;
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
-
     function clearInput() { document.getElementById("input").value = ""; saveProjectState(true); }
     async function copyOutput() { const text = document.getElementById("output").innerText; try { await navigator.clipboard.writeText(text); setStatus("Copied output"); } catch { setStatus("Copy failed"); } }
     function saveCurrentFile() { downloadCode(); setStatus("Saved"); setOutput("Saved current file", "#34a853"); }
@@ -1270,17 +1751,7 @@ using namespace std;
     function openSearchDialog() {
       showModal({
         title: "Search / Replace",
-        body: `
-          <div>Tìm và thay thế trong file hiện tại.</div>
-          <div class="field">
-            <label>Từ khóa tìm</label>
-            <input id="dlgSearch" placeholder="example" />
-          </div>
-          <div class="field">
-            <label>Thay bằng</label>
-            <input id="dlgReplace" placeholder="newText" />
-          </div>
-        `,
+        body: `<div>Tìm và thay thế trong file hiện tại.</div><div class="field"><label>Từ khóa tìm</label><input id="dlgSearch" placeholder="example" /></div><div class="field"><label>Thay bằng</label><input id="dlgReplace" placeholder="newText" /></div>`,
         buttons: [
           { text: "Đóng", onClick: closeModal },
           { text: "Search", primary: true, onClick: () => { currentSearchTerm = document.getElementById("dlgSearch").value || ""; currentSearchIndex = 0; closeModal(); findNext(); } }
@@ -1320,7 +1791,7 @@ using namespace std;
     function replaceAll() {
       if (!editor) return;
       const term = document.getElementById("searchInput").value || currentSearchTerm;
-      const repl = document.getElementById("replaceInput").value || document.getElementById("dlgReplace")?.value || "";
+      const repl = document.getElementById("replaceInput").value || document.getElementById("dlgReplace") || "";
       if (!term) return;
       const content = editor.getValue().split(term).join(repl);
       editor.setValue(content);
@@ -1335,6 +1806,257 @@ using namespace std;
       terminal.appendChild(line);
       terminal.scrollTop = terminal.scrollHeight;
     }
+
+    function loadRefs(){ try { return JSON.parse(localStorage.getItem(REFS_KEY) || "[]"); } catch { return []; } }
+    function saveRefs(v){ localStorage.setItem(REFS_KEY, JSON.stringify(v)); }
+    function getUsers(){ try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch { return []; } }
+    function setUsers(v){ localStorage.setItem(USERS_KEY, JSON.stringify(v)); }
+    function setSession(user){ localStorage.setItem(SESSION_KEY, JSON.stringify(user)); renderUserState(); }
+    function getSession(){ try { return JSON.parse(localStorage.getItem(SESSION_KEY) || "null"); } catch { return null; } }
+
+    function renderUserState() {
+      const badge = document.getElementById("userBadgeArea");
+      const authBtn = document.getElementById("authBtn");
+      const session = getSession();
+      if (session) {
+        badge.innerHTML = `<div class="user-badge"><span class="user-dot"></span><span>Xin chào, ${escapeHtml(session.displayName || session.user || "User")}</span></div>`;
+        authBtn.textContent = "🚪 Đăng xuất";
+        authBtn.onclick = logoutUser;
+      } else {
+        badge.innerHTML = "";
+        authBtn.textContent = "👤 Login / Register";
+        authBtn.onclick = openLoginDialog;
+      }
+    }
+
+    function logoutUser() {
+      localStorage.removeItem(SESSION_KEY);
+      renderUserState();
+      setStatus("Đã đăng xuất");
+    }
+
+    function enableReferenceDocuments(){ document.body.dataset.auth = "1"; localStorage.setItem("minh_ref_access", "1"); renderUserState(); }
+
+    function openLoginDialog() {
+      const session = getSession();
+      if (session) return logoutUser();
+
+      showModal({
+        title: "Đăng nhập / Đăng ký",
+        body: `
+          <div class="auth-shell">
+            <div class="auth-hero">
+              <h2>Chào mừng đến với Minh IDE Pro</h2>
+              <p>
+                Đăng nhập để lưu tài khoản, hiển thị tên người dùng trên thanh công cụ,
+                và mở khóa kho tài liệu tham khảo cá nhân.
+              </p>
+              <div style="margin-top:14px; display:grid; gap:8px;">
+                <div>✅ Hiển thị tên tài khoản sau khi đăng nhập</div>
+                <div>✅ Đổi nút <b>Login / Register</b> thành <b>Đăng xuất</b></div>
+                <div>✅ Google / Facebook / GitHub đẹp hơn</div>
+                <div>✅ Tìm kiếm file, quản lý project, backup</div>
+              </div>
+            </div>
+
+            <div class="auth-form">
+              <div class="field">
+                <label>Chế độ</label>
+                <select id="authMode">
+                  <option value="login">Đăng nhập</option>
+                  <option value="register">Đăng ký</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Username / Email</label>
+                <input id="authUser" placeholder="user@example.com" />
+              </div>
+
+              <div class="field">
+                <label>Mật khẩu</label>
+                <input id="authPass" type="password" />
+              </div>
+
+              <div class="field" id="authExtra" style="display:none;">
+                <label>Điền họ tên</label>
+                <input id="authFullName" placeholder="Nguyễn Văn A" />
+                <label style="display:block;margin-top:12px;">Xác minh mật khẩu</label>
+                <input id="authPass2" type="password" />
+                <label style="display:block;margin-top:12px;">Timezone</label>
+                <input id="authTz" placeholder="Asia/Ho_Chi_Minh" value="Asia/Ho_Chi_Minh" />
+              </div>
+
+              <div class="field">
+                <label>Đăng nhập bằng mạng xã hội</label>
+                <div class="social-grid">
+                  <button class="social-btn" onclick="socialLogin('google')">
+                    <span class="icon google">G</span>
+                    <span>Continue with Google</span>
+                  </button>
+                  <button class="social-btn" onclick="socialLogin('facebook')">
+                    <span class="icon facebook">f</span>
+                    <span>Continue with Facebook</span>
+                  </button>
+                  <button class="social-btn" onclick="socialLogin('github')">
+                    <span class="icon github">⌘</span>
+                    <span>Continue with GitHub</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `,
+        buttons: [
+          { text: "Đóng", onClick: closeModal },
+          { text: "Xác nhận", primary: true, onClick: authSubmit }
+        ]
+      });
+
+      setTimeout(() => {
+        const mode = document.getElementById("authMode");
+        const extra = document.getElementById("authExtra");
+        mode?.addEventListener("change", () => {
+          extra.style.display = mode.value === "register" ? "block" : "none";
+        });
+      }, 50);
+    }
+
+    function authSubmit() {
+      const mode = document.getElementById("authMode").value;
+      const user = document.getElementById("authUser").value.trim();
+      const pass = document.getElementById("authPass").value;
+      const users = getUsers();
+
+      if (mode === "register") {
+        const fullName = document.getElementById("authFullName").value.trim();
+        const pass2 = document.getElementById("authPass2").value;
+        const tz = document.getElementById("authTz").value.trim() || Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (!user || !pass || !fullName) return alert("Vui lòng nhập username/email, họ tên và mật khẩu.");
+        if (pass !== pass2) return alert("Mật khẩu xác minh không khớp.");
+        if (users.some(u => u.user.toLowerCase() === user.toLowerCase())) return alert("Tài khoản đã tồn tại.");
+        const record = { user, pass, fullName, tz, createdAt: Date.now(), provider: "local" };
+        users.push(record);
+        setUsers(users);
+        setSession({ user, displayName: fullName, tz, provider: "local" });
+        closeModal();
+        enableReferenceDocuments();
+        setStatus("Đăng ký và đăng nhập thành công");
+        return;
+      }
+
+      const found = users.find(u => u.user.toLowerCase() === user.toLowerCase() && u.pass === pass);
+      if (!found) return alert("Sai username/email hoặc mật khẩu.");
+      setSession({ user: found.user, displayName: found.fullName || found.user, tz: found.tz, provider: "local" });
+      closeModal();
+      enableReferenceDocuments();
+      setStatus("Đăng nhập thành công");
+    }
+
+    function socialLogin(provider){
+      const name = prompt("Điền họ tên của bạn:");
+      if (!name) return;
+      const pass = prompt("Nhập mật khẩu:");
+      if (!pass) return;
+      const pass2 = prompt("Xác minh mật khẩu:");
+      if (pass !== pass2) return alert("Mật khẩu xác minh không khớp.");
+      setSession({
+        user: `${provider}_demo_user`,
+        displayName: name,
+        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        provider
+      });
+      closeModal();
+      enableReferenceDocuments();
+      setStatus(`Đã đăng nhập bằng ${provider}`);
+    }
+
+    function openReferenceDocuments() {
+      if (!getSession() && localStorage.getItem("minh_ref_access") !== "1") return openLoginDialog();
+      document.body.innerHTML = `
+        <div class="doc-page">
+          <div class="topbar" style="position:sticky;top:0;z-index:100;">
+            <div class="brand"><img src="image(7).png" alt="Minh IDE" /><span>My refrence document</span></div>
+            <div class="top-actions">
+              <button class="btn-outline" onclick="location.reload()">← Quay lại IDE</button>
+              <button class="btn-outline" onclick="openLoginDialog()">👤 Tài khoản</button>
+              <button class="btn" onclick="createReferenceDocument()">＋ Tạo document</button>
+            </div>
+          </div>
+          <div class="doc-toolbar">
+            <button class="btn-outline" onclick="createReferenceDocument()">＋ New document</button>
+            <button class="btn-outline" onclick="openReferenceImport()">Open</button>
+            <button class="btn-outline" onclick="downloadReferences()">Download</button>
+          </div>
+          <div class="doc-grid" id="docGrid"></div>
+        </div>
+      `;
+      renderRefs();
+    }
+
+    function renderRefs(){
+      const grid = document.getElementById("docGrid");
+      if (!grid) return;
+      const refs = loadRefs();
+      grid.innerHTML = "";
+      const plus = document.createElement("div");
+      plus.className = "doc-plus";
+      plus.textContent = "+";
+      plus.onclick = createReferenceDocument;
+      grid.appendChild(plus);
+      refs.forEach((doc, idx) => {
+        const card = document.createElement("div");
+        card.className = "doc-card";
+        const media = doc.type === "image" ? `<img src="${doc.content}" alt="">` : doc.type === "video" ? `<video src="${doc.content}" controls></video>` : doc.type === "pdf" ? "📄 PDF" : "📝 DOC";
+        card.innerHTML = `<div><div class="doc-thumb">${media}</div><div class="doc-name">${escapeHtml(doc.name || "Untitled")}</div></div><div class="doc-actions"><button class="btn-outline">Open</button><button class="btn-outline">Rename</button><button class="btn danger">Delete</button></div>`;
+        const [openBtn, renameBtn, delBtn] = card.querySelectorAll("button");
+        openBtn.onclick = () => openReferenceViewer(idx);
+        renameBtn.onclick = () => renameReferenceDocument(idx);
+        delBtn.onclick = () => deleteReferenceDocument(idx);
+        grid.appendChild(card);
+      });
+    }
+
+    function createReferenceDocument(){
+      const refs = loadRefs();
+      const name = prompt("Tên document:");
+      if (!name) return;
+      const type = prompt("Loại (doc/image/video/pdf/code/math):", "doc") || "doc";
+      const content = prompt("Dán nội dung hoặc URL file (ảnh/video/pdf), hoặc code/text:") || "";
+      refs.push({ name, type, content, createdAt: Date.now() });
+      saveRefs(refs);
+      renderRefs();
+    }
+
+    function openReferenceViewer(index){
+      const refs = loadRefs(); const doc = refs[index]; if (!doc) return;
+      showModal({
+        title: doc.name,
+        body: doc.type === "code" ? `<textarea class="doc-view" spellcheck="false">${escapeHtml(doc.content)}</textarea>` :
+              doc.type === "pdf" ? `<iframe src="${escapeHtml(doc.content)}" style="width:100%;height:70vh;border:0;border-radius:12px;"></iframe>` :
+              doc.type === "image" ? `<img src="${escapeHtml(doc.content)}" style="max-width:100%;border-radius:12px;">` :
+              doc.type === "video" ? `<video src="${escapeHtml(doc.content)}" controls style="width:100%;max-height:70vh;"></video>` :
+              `<div style="white-space:pre-wrap;font-family:Roboto Mono,monospace;">${escapeHtml(doc.content)}</div>`,
+        buttons: [{ text:"Đóng", primary:true, onClick: closeModal }]
+      });
+    }
+
+    function renameReferenceDocument(index){
+      const refs = loadRefs(); const doc = refs[index]; if (!doc) return;
+      const name = prompt("Tên mới:", doc.name);
+      if (!name) return;
+      doc.name = name;
+      saveRefs(refs); renderRefs();
+    }
+
+    function deleteReferenceDocument(index){
+      const refs = loadRefs(); if (!refs[index]) return;
+      if (!confirm("Xóa document này?")) return;
+      refs.splice(index,1); saveRefs(refs); renderRefs();
+    }
+
+    function openReferenceImport(){ alert("Demo: dùng nút Create document để tạo Reference Document riêng của bạn."); }
+    function downloadReferences(){ const blob = new Blob([JSON.stringify(loadRefs(), null, 2)], { type:"application/json;charset=utf-8" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = "my_reference_documents.json"; a.click(); URL.revokeObjectURL(url); }
 
     function restoreBackup() {
       const saved = loadBackupState();
@@ -1357,59 +2079,7 @@ using namespace std;
     function openAboutDialog() {
       showModal({
         title: "Minh IDE Pro - Thuyết minh sản phẩm",
-        body: `
-          <div class="article-section">
-            <h3>1. Tính mới, tính sáng tạo</h3>
-            <ul>
-              <li>Smart Bundle Compilation: tự động duyệt đệ quy các chỉ thị <code>#include "..."</code> để gom nhiều file thành một gói dữ liệu duy nhất.</li>
-              <li>Terminal giả lập và Project Tree hoàn toàn client-side.</li>
-              <li>Local Backup & Restore lưu cả con trỏ, vị trí cuộn và mã nguồn.</li>
-            </ul>
-
-            <h3>2. Nguyên vật liệu / công nghệ</h3>
-            <ul>
-              <li>HTML5, CSS3 với biến theme Light/Dark.</li>
-              <li>JavaScript thuần, không phụ thuộc framework nặng.</li>
-              <li>Monaco Editor từ CDN; Judge0 CE cho biên dịch/chạy.</li>
-            </ul>
-
-            <h3>3. Cách cài đặt</h3>
-            <ul>
-              <li>Người dùng cuối chỉ cần mở URL trên trình duyệt.</li>
-              <li>Nhà phát triển chỉ cần file <b>index.html</b> và tài nguyên đi kèm.</li>
-            </ul>
-
-            <h3>4. Nguyên tắc hoạt động</h3>
-            <ul>
-              <li>Tự kiểm tra cú pháp mỗi 80ms sau khi ngừng gõ.</li>
-              <li>Khi Run, hệ thống đóng gói project và gửi sang Judge0 qua HTTP POST.</li>
-              <li>Nhận lại STDOUT, STDERR, Compile Error, Execution Time, Memory.</li>
-            </ul>
-
-            <h3>5. Khả năng ứng dụng</h3>
-            <ul>
-              <li>Phù hợp giáo dục, CLB tin học, phòng máy trường học.</li>
-              <li>Hạn chế: phụ thuộc Internet và Free Tier của Judge0.</li>
-            </ul>
-
-            <h3>6. Hiệu quả</h3>
-            <ul>
-              <li>Không cần cài môi trường lập trình.</li>
-              <li>Không tiêu tốn CPU/RAM máy người dùng để biên dịch.</li>
-            </ul>
-
-            <h3>7. Tài liệu / GitHub</h3>
-            <ul>
-              <li><a href="https://github.com/levanly2014/Minh-IDE-Pro" target="_blank" rel="noopener">https://github.com/levanly2014/Minh-IDE-Pro</a></li>
-            </ul>
-
-            <h3>8. Cam kết bản quyền</h3>
-            <ul>
-              <li>Kiến trúc điều hướng, tab, gộp file đệ quy và ZIP cục bộ là tự phát triển.</li>
-              <li>Sử dụng Monaco Editor và Judge0 theo điều khoản mã nguồn mở.</li>
-            </ul>
-          </div>
-        `,
+        body: `<div class="article-section"><h3>1. Tính mới, tính sáng tạo</h3><ul><li>Smart Bundle Compilation: tự động duyệt đệ quy các chỉ thị <code>#include "..."</code> để gom nhiều file thành một gói dữ liệu duy nhất.</li><li>Terminal giả lập và Project Tree hoàn toàn client-side.</li><li>Local Backup & Restore lưu cả con trỏ, vị trí cuộn và mã nguồn.</li><li>AST Parser tích hợp: dùng Acorn cho JavaScript và parser C++ subset riêng để hiển thị cây AST trực quan.</li><li><b>Math Inspector PRO</b>: soi biểu thức toán học, phát hiện chia cho 0, ngoặc lệch, toán tử lạ và dựng “cây lỗi” riêng kiểu quân sư Zhuge Liang.</li></ul><h3>2. Nguyên vật liệu / công nghệ</h3><ul><li>HTML5, CSS3 với biến theme Light/Dark.</li><li>JavaScript thuần, không phụ thuộc framework nặng.</li><li>Monaco Editor từ CDN; Judge0 CE cho biên dịch/chạy.</li><li>Acorn cho AST JavaScript; parser tùy biến cho C++ subset; parser biểu thức toán học PRO.</li></ul></div>`,
         buttons: [{ text: "Đóng", primary: true, onClick: closeModal }]
       });
     }
@@ -1435,13 +2105,7 @@ using namespace std;
 
       const saved = loadProjectState() || loadBackupState();
       if (saved && Array.isArray(saved.tabs) && saved.tabs.length) {
-        tabs = saved.tabs.map((t, i) => ({
-          id: t.id || `tab_${Date.now()}_${i}`,
-          name: t.name || `file_${i + 1}.cpp`,
-          code: typeof t.code === "string" ? t.code : "",
-          unsaved: !!t.unsaved,
-          path: t.path || t.name || `file_${i + 1}.cpp`
-        }));
+        tabs = saved.tabs.map((t, i) => ({ id: t.id || `tab_${Date.now()}_${i}`, name: t.name || `file_${i + 1}.cpp`, code: typeof t.code === "string" ? t.code : "", unsaved: !!t.unsaved, path: t.path || t.name || `file_${i + 1}.cpp` }));
         activeTabId = saved.activeTabId && tabs.some(t => t.id === saved.activeTabId) ? saved.activeTabId : tabs[0].id;
         currentTheme = saved.theme || currentTheme;
         applyTheme();
@@ -1468,6 +2132,8 @@ using namespace std;
       restoreCursorState();
       appendTerminal("IDE ready.");
       openAboutDialog();
+      renderUserState();
+      refreshMathInspector();
 
       editor.onDidChangeModelContent(function () {
         const active = getActiveTab();
@@ -1482,7 +2148,6 @@ using namespace std;
 
       editor.onDidChangeCursorPosition(saveCursorState);
       editor.onDidScrollChange(saveCursorState);
-
       document.getElementById("input").addEventListener("input", function () { saveProjectState(true); });
 
       document.getElementById("terminalInput").addEventListener("keydown", function(e) {
@@ -1490,27 +2155,19 @@ using namespace std;
           const cmd = this.value.trim();
           if (!cmd) return;
           appendTerminal(`> ${cmd}`);
-          if (cmd === "help") {
-            appendTerminal("Commands: help, tree, run, ls, clear, backup, restore, about");
-          } else if (cmd === "tree" || cmd === "ls") {
-            appendTerminal(tabs.map(t => `- ${t.path || t.name}`).join("\n"));
-          } else if (cmd === "run") {
-            runCode();
-          } else if (cmd === "clear") {
-            clearTerminal();
-          } else if (cmd === "backup") {
-            saveProjectState(true);
-            appendTerminal("Backup saved.");
-          } else if (cmd === "restore") {
-            restoreBackup();
-          } else if (cmd === "about") {
-            openAboutDialog();
-          } else {
-            appendTerminal("Unknown command. Type help.");
-          }
+          if (cmd === "help") appendTerminal("Commands: help, tree, run, ls, clear, backup, restore, about");
+          else if (cmd === "tree" || cmd === "ls") appendTerminal(tabs.map(t => `- ${t.path || t.name}`).join("\n"));
+          else if (cmd === "run") runCode();
+          else if (cmd === "clear") clearTerminal();
+          else if (cmd === "backup") { saveProjectState(true); appendTerminal("Backup saved."); }
+          else if (cmd === "restore") restoreBackup();
+          else if (cmd === "about") openAboutDialog();
+          else appendTerminal("Unknown command. Type help.");
           this.value = "";
         }
       });
+
+      renderUserState();
     });
 
     document.addEventListener("keydown", function (e) {
@@ -1525,6 +2182,17 @@ using namespace std;
 
     document.getElementById("fileInput").addEventListener("change", handleFileOpen);
     document.getElementById("modalOverlay").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
+
+    function validateSyntax() {
+      if (!editor || !window.monaco) return;
+      const model = editor.getModel();
+      monaco.editor.setModelLanguage(model, detectLanguageByFileName(getActiveTab()?.name || "main.cpp"));
+      updateProblemIndicators();
+      analyzeAlgorithm();
+      updateAstView();
+      refreshMathInspector();
+      saveProjectState();
+    }
   </script>
 </body>
 </html>
